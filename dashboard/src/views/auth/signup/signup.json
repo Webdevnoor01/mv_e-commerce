@@ -1,0 +1,20 @@
+{
+  "name": {
+    "name": "name",
+    "type": "text",
+    "placeHolder": "mykel jon",
+    "label": "Name"
+  },
+  "email": {
+    "name": "email",
+    "type": "email",
+    "placeHolder": "example123@gmail.com",
+    "label": "Email"
+  },
+  "password": {
+    "name": "password",
+    "type": "password",
+    "placeHolder": "Jsd$5sadfsi435",
+    "label": "password"
+  }
+}

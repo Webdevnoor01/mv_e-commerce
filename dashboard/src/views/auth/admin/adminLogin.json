@@ -1,0 +1,14 @@
+{
+  "email": {
+    "name": "email",
+    "type": "email",
+    "placeHolder": "mykeljon",
+    "label": "Email"
+  },
+  "password": {
+    "name": "password",
+    "type": "password",
+    "placeHolder": "Jsd$5sadfsi435",
+    "label": "password"
+  }
+}
