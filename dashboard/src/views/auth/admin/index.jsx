@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+// react-router-dom
+import { useNavigate } from "react-router-dom";
+
 // react-redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // actions
-import { adminLogin } from "../../../store/Reducers/authSlice";
+import { adminLogin, resetMessages } from "../../../store/Reducers/authSlice";
 
 // UI components
 import Button from "../../../components/ui/button";
@@ -19,17 +22,34 @@ import adminLoginObj from "./adminLogin.json";
 
 // Utilities
 import mapStateToValues from "../../../utils/mapStateToValues";
-import shortid from "shortid";
+
+// libraries
+import { toast } from "react-hot-toast";
+import { BeatLoader, BounceLoader, ClockLoader } from "react-spinners";
 
 const AdminLogin = () => {
-  const inputRef = useRef();
-  const { formState, handleChange, handleSubmit, handleClick, handleBlur } =
-    useForm({
-      formState: adminLoginObj,
-    });
+  const { loading, errorMessage, successMessage } = useSelector(
+    (state) => state.auth
+  );
+  const { formState, handleChange, handleSubmit } = useForm({
+    formState: adminLoginObj,
+  });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const adminLoginData = Object.values(adminLoginObj);
+
+  useEffect(() => {
+    console.log(errorMessage, successMessage);
+    if (errorMessage) {
+      toast.error(errorMessage);
+    }
+    if (successMessage) {
+      toast.success(successMessage);
+      navigate("/");
+    }
+    dispatch(resetMessages());
+  }, [successMessage, errorMessage]);
   return (
     <div>
       <div className="min-w-screen min-h-screen bg-[#161d31] flex justify-center items-center">
@@ -109,7 +129,12 @@ const AdminLogin = () => {
                   onBlur={handleBlur}
                 />
               ))} */}
-              <Button btnTxt={"Sign Up"} type={"submit"} />
+              <Button
+                btnTxt={"Sign Up"}
+                type={"submit"}
+                isLoading={loading}
+                IconLoading={<BeatLoader color="#ffffff" size="1.25rem" />}
+              />
             </form>
           </div>
         </div>

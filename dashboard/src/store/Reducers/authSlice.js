@@ -4,32 +4,49 @@ import api from "../../api";
 /**
  *@param { object} payload paylod should be an object
  */
-export const adminLogin = createAsyncThunk("auth/admin-login",async (payload) =>{
-console.log("authSlice: ", payload)
+export const adminLogin = createAsyncThunk(
+  "auth/admin-login",
+  async (payload, {rejectWithValue, fulfillWithValue}) => {
+    console.log("authSlice: ", payload);
     try {
-        const { data } = await api.post("/admin/login", payload, {
-            withCredentials:true
-        })
-        return data
+      const { data } = await api.post("/admin/login", payload, {
+        withCredentials: true,
+      });
+      localStorage.setItem("accessToken", data.token)
+      return fulfillWithValue(data)
     } catch (e) {
-        console.log("authReducer:ERROR->", e.response.data.message)
+        return rejectWithValue(e.response.data)
     }
-})
+  }
+);
 
 const authSlice = createSlice({
-    name:"auth",
-    initialState:{
-        successMessage:'',
-        errorMessage:'',
-        loading:false,
-        userInfo:{}
-    },
-    reducers:{
-
-    },
-    extraReducers:{
-
+  name: "auth",
+  initialState: {
+    successMessage: "",
+    errorMessage: "",
+    loading: false,
+    userInfo: {},
+  },
+  reducers: {
+    resetMessages: (state, action) =>{
+        state.errorMessage="",
+        state.successMessage=""
     }
-})
-
-export default authSlice.reducer
+  },
+  extraReducers: {
+    [adminLogin.pending] :(state, action) =>{
+        state.loading = true
+    },
+    [adminLogin.fulfilled] : (state, action) =>{
+        state.loading = false,
+        state.successMessage = action.payload.message
+    },
+    [adminLogin.rejected] : (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload.message
+    }
+  },
+});
+export const { resetMessages } = authSlice.actions
+export default authSlice.reducer;

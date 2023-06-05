@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import AdminLogin from "../../views/auth/admin";
 const Login = lazy(() => import("../../views/auth/login"));
 const Register = lazy(() => import("../../views/auth/signup"));
+
 const publicRoutes = [
   {
     path: "/login",

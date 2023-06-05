@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 // React icons
@@ -17,8 +17,13 @@ import useForm from "../../../hooks/useForm";
 // register form initial state
 import loginFormObj from "./login.json";
 
+// libraries
+import { toast } from "react-hot-toast";
+
 // Utilities
 import mapValuesToState from "../../../utils/mapValuesToState";
+import { useDispatch, useSelector } from "react-redux";
+import { resetMessages } from "../../../store/Reducers/authSlice";
 
 const Login = () => {
   //   const [formState, setFormState] = useState(mapValuesToState(loginFormObj));
@@ -35,7 +40,7 @@ const Login = () => {
             Please signin to your account and start your bussiness
           </p>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={(e) => handleSubmit(e)}>
             <InputGroup
               htmlFor={"email"}
               lable={"Emial"}
