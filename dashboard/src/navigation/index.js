@@ -1,4 +1,4 @@
-import { allNavs } from "./allNav"
+import { allNav } from "./allNav"
 export const getNavs = (role) =>{
-    return allNavs.filter(navItem => navItem.role.includes(role))
+    return allNav.filter(navItem => navItem.role === role)
 }
