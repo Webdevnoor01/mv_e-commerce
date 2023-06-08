@@ -1,13 +1,13 @@
 import { Suspense, lazy } from "react";
 
-const Dashboard = lazy(() => import("../../views/pages/dashboard"));
+const AdminDashboard = lazy(() => import("../../views/admin/dashboard"));
 
 export const adminRoutes = [
   {
     path: "admin/dashboard",
     element: (
       <Suspense fallback="Loading...">
-        <Dashboard />
+        <AdminDashboard />
       </Suspense>
     ),
     role: "admin",
