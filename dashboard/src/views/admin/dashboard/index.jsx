@@ -15,6 +15,39 @@ import DashboardChart from "../../../components/chart";
 import RecentChatItem from "../../../components/rectnt-chat-item";
 import Table from "../../../components/table";
 const AdminDashboard = () => {
+  const tableOption = {
+    thead: ["Order Id", "Price", "Order Status", "payment Status", "Action"],
+    tbody: {
+      data1: {
+        td: [
+          "#lsdfjdsfalkjfs",
+          250,
+          <span> processing </span>,
+          <span>Paid</span>,
+          <Link>view</Link>,
+        ],
+      },
+      data2: {
+        td: [
+          "#lsdfjdsfalkjfs",
+          700,
+          <span> processing </span>,
+          <span>Paid</span>,
+          <Link>view</Link>,
+        ],
+      },
+      data3: {
+        td: [
+          "#lsdfjdsfalkjfs",
+          2500,
+          <span> processing </span>,
+          <span>Paid</span>,
+          <Link>view</Link>,
+        ],
+      },
+    },
+  };
+
   return (
     <div className="px-2 md:px-7 py-5">
       <section className=" grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-7 ">
@@ -94,36 +127,8 @@ const AdminDashboard = () => {
       <Table
         tableName={"Recent Orders"}
         to="#"
-        thead={[
-          "Order Id",
-          "Price",
-          "Payment Status",
-          "Order status",
-          "Acitve",
-        ]}
-        tbody={[
-          [
-            "#sldfj43oi",
-            395,
-            <span>pendeng</span>,
-            <span>pending</span>,
-            <Link>view all</Link>,
-          ],
-          [
-            "#sldfj43oi",
-            395,
-            <span>pendeng</span>,
-            <span>pending</span>,
-            <Link>view all</Link>,
-          ],
-          [
-            "#sldfj43oi",
-            395,
-            <span>pendeng</span>,
-            <span>pending</span>,
-            <Link>view all</Link>,
-          ],
-        ]}
+        thead={tableOption.thead}
+        tbodys={tableOption.tbody}
       />
     </div>
   );

@@ -11,13 +11,16 @@ const InputGroup = ({
   value,
   inputRef,
   isActive,
+  hidden,
 }) => {
   return (
     <div className="flex flex-col w-full gap-1 mb-3">
       <label htmlFor={htmlFor}>{lable}</label>
       <input
         ref={isActive ? inputRef : null}
-        className="px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md text-[#d0d2d6] focus:border-indigo-500 overflow-hidden"
+        className={`px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md text-[#d0d2d6] focus:border-indigo-500 overflow-hidden ${
+          hidden && "hidden"
+        }`}
         type={type}
         name={htmlFor}
         placeholder={placeholder}
