@@ -1,8 +1,10 @@
 import { Suspense, lazy } from "react";
-import Category from "../../views/admin/category";
+import Category from "../../views/admin/category"; 
 
 const AdminDashboard = lazy(() => import("../../views/admin/dashboard"));
 const Orders = lazy(() => import("../../views/admin/orders"));
+const Sellers = lazy(() => import("../../views/admin/sellers"));
+const PaymentRequest = lazy(() => import("../../views/admin/payment-request"));
 
 export const adminRoutes = [
   {
@@ -28,6 +30,24 @@ export const adminRoutes = [
     element: (
       <Suspense fallback="Loading...">
         <Category />
+      </Suspense>
+    ),
+    role: "admin",
+  },
+  {
+    path: "admin/dashboard/sellers",
+    element: (
+      <Suspense fallback="Loading...">
+        <Sellers />
+      </Suspense>
+    ),
+    role: "admin",
+  },
+  {
+    path: "admin/dashboard/payment-request",
+    element: (
+      <Suspense fallback="Loading...">
+        <PaymentRequest />
       </Suspense>
     ),
     role: "admin",

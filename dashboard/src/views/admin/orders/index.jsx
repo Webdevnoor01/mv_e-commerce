@@ -2,12 +2,14 @@ import { useState } from "react";
 
 // react-icons
 import { BsArrowBarDown } from "react-icons/bs";
+import { FaEye } from "react-icons/fa";
 
 // components
 import InputGroup from "../../../components/shared/Input-group";
 import Table from "../../../components/table";
 import { Link } from "react-router-dom";
 import Pagination from "../../../components/pagination";
+import Action from "../../../components/table-action";
 
 const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,7 +35,10 @@ const Orders = () => {
           250,
           <span> processing </span>,
           <span>Paid</span>,
-          <Link>view</Link>,
+          <span className="flex justify-start items-center gap-1">
+            <Action Icon={FaEye} bg={"bg-green-500"} />
+          </span>
+          ,
           <div
             className="cursor-pointer"
             onClick={() => setIsChildShow(!isChildShow)}
@@ -66,7 +71,9 @@ const Orders = () => {
           700,
           <span> processing </span>,
           <span>Paid</span>,
-          <Link>view</Link>,
+         <span className="flex justify-start items-center gap-1">
+            <Action Icon={FaEye} bg={"bg-green-500"} />
+          </span>,
           <div className="cursor-pointer">
             <BsArrowBarDown />
           </div>,
@@ -78,7 +85,9 @@ const Orders = () => {
           2500,
           <span> processing </span>,
           <span>Paid</span>,
-          <Link>view</Link>,
+          <span className="flex justify-start items-center gap-1">
+            <Action Icon={FaEye} bg={"bg-green-500"} />
+          </span>,
           <div className="cursor-pointer">
             <BsArrowBarDown />
           </div>,

@@ -1,4 +1,5 @@
-import React from "react";
+
+
 import { Link } from "react-router-dom";
 
 // utility libraries
@@ -25,7 +26,7 @@ const Table = ({ tableName, to, thead, tbodys, isShow, isHeading }) => {
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm text-left text-[#d0d2d6]">
           {thead && (
-            <thead className="text-sm text-[#d2d0d6] uppercase border-b border-slate-700 ">
+            <thead className={`text-sm text-[#d2d0d6] uppercase border-b border-slate-700`}>
               <tr>
                 {thead.map((thData) => (
                   <th
