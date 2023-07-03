@@ -5,6 +5,9 @@ const AdminDashboard = lazy(() => import("../../views/admin/dashboard"));
 const Orders = lazy(() => import("../../views/admin/orders"));
 const Sellers = lazy(() => import("../../views/admin/sellers"));
 const PaymentRequest = lazy(() => import("../../views/admin/payment-request"));
+const DeActiveSellers = lazy(() => import("../../views/admin/deactive-sellers"));
+const SellerRequests = lazy(() => import("../../views/admin/seller-requests"));
+const SellerDetails = lazy(() => import("../../views/admin/seller-details"));
 
 export const adminRoutes = [
   {
@@ -48,6 +51,33 @@ export const adminRoutes = [
     element: (
       <Suspense fallback="Loading...">
         <PaymentRequest />
+      </Suspense>
+    ),
+    role: "admin",
+  },
+  {
+    path: "admin/dashboard/deactive-sellers",
+    element: (
+      <Suspense fallback="Loading...">
+        <DeActiveSellers />
+      </Suspense>
+    ),
+    role: "admin",
+  },
+  {
+    path: "admin/dashboard/seller-requests",
+    element: (
+      <Suspense fallback="Loading...">
+        <SellerRequests />
+      </Suspense>
+    ),
+    role: "admin",
+  },
+  {
+    path: "admin/dashboard/seller/details/:sellerId",
+    element: (
+      <Suspense fallback="Loading...">
+        <SellerDetails />
       </Suspense>
     ),
     role: "admin",

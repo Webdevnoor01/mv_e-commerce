@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 
+// third-party libraries
+import shortid from "shortid";
+
 // React icons
 import { FaEye } from "react-icons/fa";
+
 
 // components
 import Table from "../../../components/table";
 import InputGroup from "../../../components/shared/Input-group";
 import Action from "../../../components/table-action";
 import Pagination from "../../../components/pagination";
-import Button from "../../../components/ui/button";
-
-// react spinner
-import { PropagateLoader } from "react-spinners";
-import { overrideStyle } from "../../../utils/overrideStyle";
+import Select from "../../../components/shared/select"
 
 const Sellers = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,7 +44,7 @@ const Sellers = () => {
           <span>Domkal</span>,
           <span> Murshidabad </span>,
           <span className="flex justify-start items-center gap-1">
-            <Action Icon={FaEye} bg={"bg-green-500"} />
+            <Action Icon={FaEye} bg={"bg-green-500"} to={"/admin/dashboard/seller/details/1"} />
           </span>,
         ],
       },
@@ -66,7 +66,7 @@ const Sellers = () => {
           <span>Domkal</span>,
           <span> Murshidabad </span>,
           <span className="flex justify-start items-center gap-1">
-            <Action Icon={FaEye} bg={"bg-green-500"} />
+            <Action Icon={FaEye} bg={"bg-green-500"} to={"/admin/dashboard/seller/details/1"} />
           </span>,
         ],
       },
@@ -88,7 +88,7 @@ const Sellers = () => {
           <span>Domkal</span>,
           <span> Murshidabad </span>,
           <span className="flex justify-start items-center gap-1">
-            <Action Icon={FaEye} bg={"bg-green-500"} />
+            <Action Icon={FaEye} bg={"bg-green-500"} to={"/admin/dashboard/seller/details/1"} />
           </span>,
         ],
       },
@@ -110,26 +110,41 @@ const Sellers = () => {
           <span>Domkal</span>,
           <span> Murshidabad </span>,
           <span className="flex justify-start items-center gap-1">
-            <Action Icon={FaEye} bg={"bg-green-500"} />
+            <Action Icon={FaEye} bg={"bg-green-500"} to={"/admin/dashboard/seller/details/1"} />
           </span>,
         ],
       },
     },
   };
+
+  const pageNumSelectOpt = [
+    {
+      id:shortid.generate(),
+      value:5,
+      text:5
+    },
+    {
+      id:shortid.generate(),
+      value:10,
+      text:10
+    },
+    {
+      id:shortid.generate(),
+      value:20,
+      text:20
+    },
+  ]
+
+  const handlePageNum = (e) => {
+    setParPage(e.target.value)
+  }
   return (
     <div className="px-2 lg:px-7 py-4">
 
       <div className="w-full">
         <div className="w-full p-4  bg-[#283046] rounded-md">
           <div className="flex justify-between items-center">
-            <select
-              className="px-4 py-2 focus:border-indigo-500 bg-[#283046] outline-none border border-slate-700 rounded-md text-[#d0d2d6] cursor-pointer "
-              name="parPage"
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </select>
+           <Select options={pageNumSelectOpt} name={"parPage"} value={parPage} onChange={handlePageNum} />
             <div className="w-3/12">
               <InputGroup type={"text"} placeholder={"search..."} />
             </div>

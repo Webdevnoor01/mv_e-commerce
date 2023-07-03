@@ -58,7 +58,7 @@ export const allNav = [
     title: "Sellers Request",
     icon: <BiLoaderCircle />,
     role: "admin",
-    path: "/admin/dashboard/sellers-request",
+    path: "/admin/dashboard/seller-requests",
   },
   {
     id: shortid.generate(),

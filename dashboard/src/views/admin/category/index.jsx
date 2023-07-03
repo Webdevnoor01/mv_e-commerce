@@ -5,12 +5,16 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
 import { BsImage } from "react-icons/bs";
 
+// third-party library
+import shortid from "shortid";
+
 // components
 import Table from "../../../components/table";
 import InputGroup from "../../../components/shared/Input-group";
 import Action from "../../../components/table-action";
 import Pagination from "../../../components/pagination";
 import Button from "../../../components/ui/button";
+import Select from "../../../components/shared/select"
 
 // react spinner
 import { PropagateLoader } from "react-spinners";
@@ -120,6 +124,28 @@ const Category = () => {
       },
     },
   };
+
+  const pageNumSelectOpt = [
+    {
+      id:shortid.generate(),
+      value:5,
+      text:5
+    },
+    {
+      id:shortid.generate(),
+      value:10,
+      text:10
+    },
+    {
+      id:shortid.generate(),
+      value:20,
+      text:20
+    },
+  ]
+
+  const handlePageNum = (e) => {
+    setParPage(e.target.value)
+  }
   return (
     <div className="px-2 lg:px-7 pt-45">
       <div className="flex lg:hidden justify-between items-center mb-5 p-4 bg-[#283046] ">
@@ -136,14 +162,7 @@ const Category = () => {
         <div className="w-full lg:1-7/12">
           <div className="className='w-full p-4  bg-[#283046] rounded-md">
             <div className="flex justify-between items-center">
-              <select
-                className="px-4 py-2 focus:border-indigo-500 bg-[#283046] outline-none border border-slate-700 rounded-md text-[#d0d2d6] cursor-pointer "
-                name="parPage"
-              >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-              </select>
+              <Select options={pageNumSelectOpt} name={"parPage"} value={parPage} onChange={handlePageNum} />
               <div className="w-3/12">
                 <InputGroup type={"text"} placeholder={"search..."} />
               </div>

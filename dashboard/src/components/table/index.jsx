@@ -53,7 +53,7 @@ const Table = ({ tableName, to, thead, tbodys, isShow, isHeading }) => {
                       <td
                         key={shortid.generate()}
                         scope="col"
-                        className="py-2 px-4 font-medium whitespace-nowrap"
+                        className="py-2 px-2 font-medium whitespace-nowrap"
                       >
                         {tdData}
                       </td>

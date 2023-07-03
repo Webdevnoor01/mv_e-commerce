@@ -10,6 +10,8 @@ import Table from "../../../components/table";
 import { Link } from "react-router-dom";
 import Pagination from "../../../components/pagination";
 import Action from "../../../components/table-action";
+import Select from "../../../components/shared/select"
+import shortid from "shortid";
 
 const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -95,18 +97,33 @@ const Orders = () => {
       },
     },
   };
+
+  const pageNumSelectOpt = [
+    {
+      id:shortid.generate(),
+      value:5,
+      text:5
+    },
+    {
+      id:shortid.generate(),
+      value:10,
+      text:10
+    },
+    {
+      id:shortid.generate(),
+      value:20,
+      text:20
+    },
+  ]
+
+  const handlePageNum = (e) => {
+    setParPage(e.target.value)
+  }
   return (
     <div className="px-2 lg:px-7 pt-45">
       <div className="w-full p-4 bg-[#283046] rounded-md ">
         <div className="flex justify-between items-center">
-          <select
-            className="px-4 py-2 focus:border-indigo-500 bg-[#283046] outline-none border border-slate-700 rounded-md text-[#d0d2d6] cursor-pointer "
-            name="parPage"
-          >
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-          </select>
+         <Select options={pageNumSelectOpt} name={"parPage"} value={parPage} onChange={handlePageNum} />
           <div className="w-3/12">
             <InputGroup type={"text"} placeholder={"search..."} />
           </div>
@@ -124,7 +141,7 @@ const Orders = () => {
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            pageNumber={500}
+            pageNumber={50}
             parPage={parPage}
             showItems={5}
           />
