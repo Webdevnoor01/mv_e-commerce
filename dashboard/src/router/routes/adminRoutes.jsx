@@ -8,6 +8,7 @@ const PaymentRequest = lazy(() => import("../../views/admin/payment-request"));
 const DeActiveSellers = lazy(() => import("../../views/admin/deactive-sellers"));
 const SellerRequests = lazy(() => import("../../views/admin/seller-requests"));
 const SellerDetails = lazy(() => import("../../views/admin/seller-details"));
+const SellersChat = lazy(() => import("../../views/admin/sellers-chat"));
 
 export const adminRoutes = [
   {
@@ -78,6 +79,15 @@ export const adminRoutes = [
     element: (
       <Suspense fallback="Loading...">
         <SellerDetails />
+      </Suspense>
+    ),
+    role: "admin",
+  },
+  {
+    path: "admin/dashboard/sellers-chat",
+    element: (
+      <Suspense fallback="Loading...">
+        <SellersChat />
       </Suspense>
     ),
     role: "admin",

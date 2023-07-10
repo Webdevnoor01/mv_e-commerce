@@ -185,7 +185,7 @@ const Category = () => {
 
         <div
           className={`w-[320px] lg:w-5/12 translate-x-100 lg:relative lg:right-0 fixed ${
-            show ? "-right-[360px]" : "right-[10px]"
+            show ? "right-[10px] " : "-right-[360px]"
           } top-0 transition-all duration-500 pt-[.7rem] z-50 rounded-md`}
         >
           <div className="w-full pl-5">

@@ -81,7 +81,7 @@ const AdminDashboard = () => {
         />
       </section>
 
-      <section className="w-full flex flex-wrap mt-7">
+      <section className="w-full flex flex-wrap mt-7 mb-3">
         <div className="w-full lg:w-7/12 lg:pr-3">
           <DashboardChart
             orders={[34, 65, 34, 65, 34, 34, 34, 56, 23, 67, 23, 45]}
