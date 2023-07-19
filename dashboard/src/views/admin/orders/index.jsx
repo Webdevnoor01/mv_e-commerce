@@ -38,7 +38,7 @@ const Orders = () => {
           <span> processing </span>,
           <span>Paid</span>,
           <span className="flex justify-start items-center gap-1">
-            <Action Icon={FaEye} bg={"bg-green-500"} />
+            <Action Icon={FaEye} bg={"bg-green-500"} to="/admin/dashboard/order/details/1" />
           </span>
           ,
           <div
