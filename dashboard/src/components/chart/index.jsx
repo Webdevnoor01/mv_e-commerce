@@ -3,7 +3,7 @@ import React from "react";
 // Chart
 import Chart from "react-apexcharts";
 
-const DashboardChart = ({ orders, revenue, sellers }) => {
+const DashboardChart = ({ orders, revenue, sellers, role, sales }) => {
   const state = {
     series: [
       {
@@ -15,7 +15,7 @@ const DashboardChart = ({ orders, revenue, sellers }) => {
         data: revenue,
       },
       {
-        name: "Sellers",
+        name: `${role === "seller"? "Sales":"Sellers"}`,
         data: sellers,
       },
     ],

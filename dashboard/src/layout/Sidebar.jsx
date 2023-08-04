@@ -9,7 +9,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    setNavItems(getNavs("admin"));
+    setNavItems(getNavs("seller"));
   }, []);
   console.log("navItems: ", navItems);
   return (

@@ -114,7 +114,7 @@ export const allNav = [
     title: "Chat Customer",
     icon: <BsChat />,
     role: "seller",
-    path: "/seller/dashboard/chat-customer",
+    path: "/seller/dashboard/chat-sellers",
   },
   {
     id: shortid.generate(),

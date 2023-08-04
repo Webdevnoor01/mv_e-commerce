@@ -8,7 +8,7 @@ import { FaList } from "react-icons/fa";
 import InputGroup from "../../../components/shared/Input-group";
 import Button from "../../../components/ui/button";
 
-const SellersChat = () => {
+const ChatSeller = () => {
   const [show, setShow] = useState(false);
   const [sellerId, setSellerId] = useState("ldksfjsdkal");
 
@@ -73,6 +73,8 @@ const SellersChat = () => {
               </div>
             </div>
           </div>
+
+
           <div className="w-full h-full md:w-[clac(100%-200px)] md:pl-4 ">
             {/* message header  */}
             <div className="flex justify-between items-center ">
@@ -167,4 +169,4 @@ const SellersChat = () => {
   );
 };
 
-export default SellersChat;
+export default ChatSeller;

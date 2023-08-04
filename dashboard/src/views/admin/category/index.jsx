@@ -161,6 +161,7 @@ const Category = () => {
       <div className="flex justify-start items-start gap-2">
         <div className="w-full lg:1-7/12">
           <div className="className='w-full p-4  bg-[#283046] rounded-md">
+            
             <div className="flex justify-between items-center">
               <Select options={pageNumSelectOpt} name={"parPage"} value={parPage} onChange={handlePageNum} />
               <div className="w-3/12">
