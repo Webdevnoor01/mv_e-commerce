@@ -5,6 +5,9 @@ const Home = lazy(() => import("../../views/pages/home"))
 const SellerDashboard = lazy(() => import("../../views/seller/dashboard"))
 const AddProduct = lazy(() => import("../../views/seller/add-product"))
 const Products = lazy(() => import("../../views/seller/products"))
+const DiscountProducts = lazy(() => import("../../views/seller/discount-products"))
+const Orders = lazy(() => import("../../views/seller/orders"))
+const Payments = lazy(() => import("../../views/seller/payments"))
 
 export const sellerRoutes = [
     {
@@ -39,6 +42,27 @@ export const sellerRoutes = [
         path:"/seller/dashboard/products",
         element:<Suspense fallback="Loading..." >
             <Products />
+        </Suspense>,
+        ability:[ "seller"]
+    },
+    {
+        path:"/seller/dashboard/discount-products",
+        element:<Suspense fallback="Loading..." >
+            <DiscountProducts />
+        </Suspense>,
+        ability:[ "seller"]
+    },
+    {
+        path:"/seller/dashboard/orders",
+        element:<Suspense fallback="Loading..." >
+            <Orders />
+        </Suspense>,
+        ability:[ "seller"]
+    },
+    {
+        path:"/seller/dashboard/payments",
+        element:<Suspense fallback="Loading..." >
+            <Payments />
         </Suspense>,
         ability:[ "seller"]
     },
