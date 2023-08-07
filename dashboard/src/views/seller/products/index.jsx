@@ -31,7 +31,7 @@ const tableOption = {
           <span>10%</span>,
           <span>10</span>,
           <span className="flex justify-start items-center gap-1">
-            <Action Icon={FaEdit} bg={"bg-yellow-500"} shadow={"hover:bg-yellow-500/50"}/>
+            <Action to={"/seller/dashboard/edit-product/1"} Icon={FaEdit} bg={"bg-yellow-500"} shadow={"hover:bg-yellow-500/50"}/>
             <Action Icon={FaTrash} bg={"bg-red-500"} shadow={"hover:bg-red-500/50"}/>
             <Action to={"/seller/dashboard/products/1"} Icon={FaEye} bg={"bg-green-500"} shadow={"hover:bg-green-500/50"}  />
           </span>,
@@ -55,7 +55,7 @@ const tableOption = {
           <span>10%</span>,
           <span>10</span>,
           <span className="flex justify-start items-center gap-1">
-            <Action Icon={FaEdit} bg={"bg-yellow-500"} shadow={"hover:bg-yellow-500/50"}/>
+            <Action to={"/seller/dashboard/edit-product/1"} Icon={FaEdit} bg={"bg-yellow-500"} shadow={"hover:bg-yellow-500/50"}/>
             <Action Icon={FaTrash} bg={"bg-red-500"} shadow={"hover:bg-red-500/50"} />
             <Action to={"/seller/dashboard/products/1"} Icon={FaEye} bg={"bg-green-500"} shadow={"hover:bg-green-500/50"}  />
 
@@ -80,7 +80,7 @@ const tableOption = {
           <span>10%</span>,
           <span>10</span>,
           <span className="flex justify-start items-center gap-1">
-            <Action Icon={FaEdit} bg={"bg-yellow-500"} shadow={"hover:bg-yellow-500/50"}  />
+            <Action to={"/seller/dashboard/edit-product/1"} Icon={FaEdit} bg={"bg-yellow-500"} shadow={"hover:bg-yellow-500/50"}  />
             <Action Icon={FaTrash} bg={"bg-red-500"} shadow={"hover:bg-red-500/50"} />
             <Action to={"/seller/dashboard/products/1"} Icon={FaEye} bg={"bg-green-500"} shadow={"hover:bg-green-500/50"}  />
           </span>,

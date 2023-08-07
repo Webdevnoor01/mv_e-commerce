@@ -8,7 +8,8 @@ import { FaList } from "react-icons/fa";
 import InputGroup from "../../../components/shared/Input-group";
 import Button from "../../../components/ui/button";
 
-const ChatSeller = () => {
+const baseURL = import.meta.env.VITE_BASE_URL;
+const SellerCustomerChat = () => {
   const [show, setShow] = useState(false);
   const [sellerId, setSellerId] = useState("ldksfjsdkal");
 
@@ -26,10 +27,10 @@ const ChatSeller = () => {
           >
             <div className="w-full h-[calc(100vh-177px)] bg-[#252b3b] md:bg-transparent overflow-y-auto ">
               <div className="flex text-xl justify-between items-center p-4 md:p-0 md:px-3 md:pb-3 text-white ">
-                <h2>Sellers</h2>
+                <h2>Customers</h2>
                 <span
                   className="block cursor-pointer md:hidden
-                            "
+                          "
                   onClick={handleClose}
                 >
                   {" "}
@@ -43,7 +44,7 @@ const ChatSeller = () => {
                 <div className="relative">
                   <img
                     className="w-[38px] h-[38px] border-white border-2 max-w-[38px] p-[2px] rounded-full  "
-                    src="http://localhost:3000/images/admin.jpg"
+                    src={`${baseURL}/images/admin.jpg`}
                     alt=""
                   />
                   <div className=" w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0 "></div>
@@ -60,7 +61,7 @@ const ChatSeller = () => {
                 <div className="relative">
                   <img
                     className="w-[38px] h-[38px] border-white border-2 max-w-[38px] p-[2px] rounded-full  "
-                    src="http://localhost:3000/images/admin.jpg"
+                    src={`${baseURL}/images/admin.jpg`}
                     alt=""
                   />
                   <div className=" w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0 "></div>
@@ -74,7 +75,6 @@ const ChatSeller = () => {
             </div>
           </div>
 
-
           <div className="w-full h-full md:w-[clac(100%-200px)] md:pl-4 ">
             {/* message header  */}
             <div className="flex justify-between items-center ">
@@ -83,11 +83,14 @@ const ChatSeller = () => {
                   <div className="relative">
                     <img
                       className="w-[38px] h-[38px] border-green-500 border-2 max-w-[38px] p-[2px] rounded-full   "
-                      src="http://localhost:3000/images/admin.jpg"
+                      src={`${baseURL}/images/admin.jpg`}
                       alt="User Image"
                     />
                     <div className=" w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0 "></div>
                   </div>
+                  <h2 className="text-base text-white font-semibold">
+                    Abdun Noor
+                  </h2>
                 </div>
               )}
               <div
@@ -110,7 +113,7 @@ const ChatSeller = () => {
                     <div>
                       <img
                         className="w-[38px] h-[38px] border-white border-2 max-w-[38px] p-[2px] rounded-full   "
-                        src="http://localhost:3000/images/admin.jpg"
+                        src={`${baseURL}/images/admin.jpg`}
                         alt="User Image"
                       />
                     </div>
@@ -129,20 +132,20 @@ const ChatSeller = () => {
                     <div>
                       <img
                         className="w-[38px] h-[38px] border-white border-2 max-w-[38px] p-[2px] rounded-full   "
-                        src="http://localhost:3000/images/admin.jpg"
+                        src={`${baseURL}/images/admin.jpg`}
                         alt="User Image"
                       />
                     </div>
                   </div>
                 </div>
 
-                 {/* message item */}
-                 <div className="w-full flex justify-start items-center ">
+                {/* message item */}
+                <div className="w-full flex justify-start items-center ">
                   <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]  ">
                     <div>
                       <img
                         className="w-[38px] h-[38px] border-white border-2 max-w-[38px] p-[2px] rounded-full   "
-                        src="http://localhost:3000/images/admin.jpg"
+                        src={`${baseURL}/images/admin.jpg`}
                         alt="User Image"
                       />
                     </div>
@@ -169,4 +172,4 @@ const ChatSeller = () => {
   );
 };
 
-export default ChatSeller;
+export default SellerCustomerChat;

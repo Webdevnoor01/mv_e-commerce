@@ -21,7 +21,7 @@ const Row = ({style, index }) => {
       <div className="w-[25%] p-2 whitespace-nowrap  text-[#d0d2d6]" > {index +1} </div>
       <div className="w-[25%] p-2 whitespace-nowrap text-[#d0d2d6] " >   #454 </div>
       <div className="w-[25%] p-2 whitespace-nowrap " > 
-        <span className="py-[1px] px-[5px] bg-slate-500 text-blue-500 rounded-md text-xs text-[#d0d2d6] " > pending  </span>
+        <span className="py-[1px] px-[5px] bg-slate-500  rounded-md text-xs text-[#d0d2d6] " > pending  </span>
       </div>
       <div className="w-[25%] p-2 whitespace-nowrap  text-[#d0d2d6] " > 12 jun 2023 </div>
       <div className="w-[25%] p-2 whitespace-nowrap " > 
