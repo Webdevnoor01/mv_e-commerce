@@ -1,37 +1,37 @@
-import React, { useState } from "react";
-import Select from "../../../components/shared/select";
-import shortid from "shortid";
+import  { useState } from 'react';
+import Select from '../../../components/shared/select';
+import shortid from 'shortid';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const OrderDetails = () => {
-  const [orderStatus, setOrderStatus] = useState("pending");
+  const [orderStatus, setOrderStatus] = useState('pending');
 
   const orderStatusOptions = [
     {
       id: shortid.generate(),
-      value: "pending",
-      text: "Pending",
+      value: 'pending',
+      text: 'Pending',
     },
     {
       id: shortid.generate(),
-      value: "processing",
-      text: "Processing",
+      value: 'processing',
+      text: 'Processing',
     },
     {
       id: shortid.generate(),
-      value: "warehouse",
-      text: "Warehouse",
+      value: 'warehouse',
+      text: 'Warehouse',
     },
     {
       id: shortid.generate(),
-      value: "placed",
-      text: "Placed",
+      value: 'placed',
+      text: 'Placed',
     },
     {
       id: shortid.generate(),
-      value: "cancel",
-      text: "Cancel",
+      value: 'cancel',
+      text: 'Cancel',
     },
   ];
   const handleOrderStatus = (e) => {
@@ -62,10 +62,10 @@ const OrderDetails = () => {
                     Deliver to : Abdun Noor Faruki Biswas
                   </h2>
                   <p className="text-sm">
-                    {" "}
+                    {' '}
                     <span>
                       Chakjama Islampur Islampur Murshidabad West Bengal
-                    </span>{" "}
+                    </span>{' '}
                   </p>
                 </div>
                 <div className=" flex justify-start items-center gap-3 ">
