@@ -1,109 +1,118 @@
-import { Suspense, lazy } from "react"
+import { Suspense, lazy } from 'react'
 
-const Home = lazy(() => import("../../views/pages/home"))
-const SellerDashboard = lazy(() => import("../../views/seller/dashboard"))
-const AddProduct = lazy(() => import("../../views/seller/add-product"))
-const Products = lazy(() => import("../../views/seller/products"))
-const DiscountProducts = lazy(() => import("../../views/seller/discount-products"))
-const Orders = lazy(() => import("../../views/seller/orders"))
-const Payments = lazy(() => import("../../views/seller/payments"))
-const SellerAdminChat = lazy(() => import("../../views/seller/seller-admin-chat"))
-const SellerCustomerChat = lazy(() => import("../../views/seller/seller-customer-chat"))
-const Profile = lazy(() => import("../../views/seller/profile"))
-const EditProduct = lazy(() => import("../../views/seller/edit-product"))
+const Home = lazy(() => import('../../views/pages/home'))
+const SellerDashboard = lazy(() => import('../../views/seller/dashboard'))
+const AddProduct = lazy(() => import('../../views/seller/add-product'))
+const Products = lazy(() => import('../../views/seller/products'))
+const DiscountProducts = lazy(() => import('../../views/seller/discount-products'))
+const Orders = lazy(() => import('../../views/seller/orders'))
+const OrderDetails = lazy(() => import('../../views/seller/order-details'))
+const Payments = lazy(() => import('../../views/seller/payments'))
+const SellerAdminChat = lazy(() => import('../../views/seller/seller-admin-chat'))
+const SellerCustomerChat = lazy(() => import('../../views/seller/seller-customer-chat'))
+const Profile = lazy(() => import('../../views/seller/profile'))
+const EditProduct = lazy(() => import('../../views/seller/edit-product'))
 
 export const sellerRoutes = [
     {
-        path:"/",
+        path:'/',
         element:<Suspense fallback="Loading..." >
             <Home />
         </Suspense>,
-        ability:["admin", "seller"]
+        ability:['admin', 'seller']
     },
     {
-        path:"/seller/dashboard",
+        path:'/seller/dashboard',
         element:<Suspense fallback="Loading..." >
             <SellerDashboard />
         </Suspense>,
-        role:"seller",
-        status:"active"
+        role:'seller',
+        status:'active'
     },
     {
-        path:"/seller/dashboard/add-product",
+        path:'/seller/dashboard/add-product',
         element:<Suspense fallback="Loading..." >
             <AddProduct />
         </Suspense>,
-        role:"seller",
-        status:"active"
+        role:'seller',
+        status:'active'
     },
     {
-        path:"/seller/dashboard/edit-product/:productId",
+        path:'/seller/dashboard/edit-product/:productId',
         element:<Suspense fallback="Loading..." >
             <EditProduct />
         </Suspense>,
-        ability:[ "seller"]
+        ability:[ 'seller']
     },
     {
-        path:"/seller/dashboard/products",
+        path:'/seller/dashboard/products',
         element:<Suspense fallback="Loading..." >
             <Products />
         </Suspense>,
-        role:"seller",
-        status:"active"
+        role:'seller',
+        status:'active'
     },
     {
-        path:"/seller/dashboard/discount-products",
+        path:'/seller/dashboard/discount-products',
         element:<Suspense fallback="Loading..." >
             <DiscountProducts />
         </Suspense>,
-        role:"seller",
-        status:"active"
+        role:'seller',
+        status:'active'
     },
     {
-        path:"/seller/dashboard/orders",
+        path:'/seller/dashboard/orders',
         element:<Suspense fallback="Loading..." >
             <Orders />
         </Suspense>,
-        role:"seller",
-        ability:[ "active", "deactive"]
+        role:'seller',
+        ability:[ 'active', 'deactive']
     },
     {
-        path:"/seller/dashboard/payments",
+        path:'/seller/dashboard/order/details/:orderId',
+        element:<Suspense fallback="Loading..." >
+            <OrderDetails />
+        </Suspense>,
+        role:'seller',
+        ability:[ 'active', 'deactive']
+    },
+    {
+        path:'/seller/dashboard/payments',
         element:<Suspense fallback="Loading..." >
             <Payments />
         </Suspense>,
-        role:"seller",
-        status:"active"
+        role:'seller',
+        status:'active'
     },
     {
-        path:"/seller/dashboard/chat-sellers",
+        path:'/seller/dashboard/chat-sellers',
         element:<Suspense fallback="Loading..." >
             <SellerCustomerChat />
         </Suspense>,
-        role:"seller",
-        ability:[ "active", "deactive", "pending"]
+        role:'seller',
+        ability:[ 'active', 'deactive', 'pending']
     },
     {
-        path:"/seller/dashboard/chat-sellers/:customerId",
+        path:'/seller/dashboard/chat-sellers/:customerId',
         element:<Suspense fallback="Loading..." >
             <SellerCustomerChat />
         </Suspense>,
-        role:"seller",
-        ability:[ "active", "deactive", "pending"]
+        role:'seller',
+        ability:[ 'active', 'deactive', 'pending']
     },
     {
-        path:"/seller/dashboard/chat-support",
+        path:'/seller/dashboard/chat-support',
         element:<Suspense fallback="Loading..." >
             <SellerAdminChat />
         </Suspense>,
-        ability:[ "seller"]
+        ability:[ 'seller']
     },
     {
-        path:"/seller/dashboard/profile",
+        path:'/seller/dashboard/profile',
         element:<Suspense fallback="Loading..." >
             <Profile />
         </Suspense>,
-        ability:[ "seller"]
+        ability:[ 'seller']
     },
     
 ]

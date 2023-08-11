@@ -11,6 +11,7 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     'react-refresh/only-export-components': 'warn',
-    "quotes":[2, "single", {"aboidEscape":true}]
+    // 'prettier/prettier': ['error', { 'singleQuote': true }],
+    'quotes': ['error', 'single', { 'avoidEscape': true }]
   },
 }

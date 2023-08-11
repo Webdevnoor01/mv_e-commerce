@@ -1,51 +1,51 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 // custome & reusable components
-import Button from "../../../components/ui/button";
-import InputGroup from "../../../components/shared/Input-group";
-import TextArea from "../../../components/shared/text-area";
-import SearchableSelect from "../../../components/shared/Input-group/searchable-select";
+import Button from '../../../components/ui/button';
+import InputGroup from '../../../components/shared/Input-group';
+import TextArea from '../../../components/shared/text-area';
+import SearchableSelect from '../../../components/shared/Input-group/searchable-select';
+import ImgSelectBox from '../../../components/shared/img-select-box';
 
 // react icons
-import { BsImages } from "react-icons/bs";
-import { IoMdCloseCircleOutline } from "react-icons/io";
+import { IoMdCloseCircleOutline } from 'react-icons/io';
 
 const categories = [
   {
     id: 1,
-    name: "Watch",
+    name: 'Watch',
   },
   {
     id: 2,
-    name: "Pant",
+    name: 'Pant',
   },
   {
     id: 3,
-    name: "Shoose",
+    name: 'Shoose',
   },
   {
     id: 4,
-    name: "T-shirt",
+    name: 'T-shirt',
   },
   {
     id: 5,
-    name: "Shirt",
+    name: 'Shirt',
   },
   {
     id: 6,
-    name: "Laptop",
+    name: 'Laptop',
   },
   {
     id: 7,
-    name: "Mobile",
+    name: 'Mobile',
   },
 ];
 
 const AddProduct = () => {
   const [allCategory, setAllCategory] = useState(categories);
   const [showCategory, setShowCategory] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchValue, setSearchValue] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [images, setImages] = useState([]);
   const [imageShow, setImageShow] = useState([]);
 
@@ -78,8 +78,8 @@ const AddProduct = () => {
       tempUrl = imageShow;
       tempImages = images;
 
-      console.log("tempUrl: ", tempUrl);
-      console.log("tempImages: ", tempImages);
+      console.log('tempUrl: ', tempUrl);
+      console.log('tempImages: ', tempImages);
 
       tempImages[index] = img;
       tempUrl[index] = {
@@ -93,8 +93,8 @@ const AddProduct = () => {
       tempUrl = null;
       tempImages = null;
 
-      console.log("tempUrl: ", tempUrl);
-      console.log("tempImages: ", tempImages);
+      console.log('tempUrl: ', tempUrl);
+      console.log('tempImages: ', tempImages);
     }
   };
 
@@ -110,7 +110,7 @@ const AddProduct = () => {
     tempImages = null;
   };
 
-  console.log("urls: ", imageShow);
+  console.log('urls: ', imageShow);
   const handleSearchOption = (e) => {
     let value = e.target.value;
     setSearchValue(value);
@@ -133,9 +133,9 @@ const AddProduct = () => {
           <h1 className="text-[#d0d2d6] text-xl font-semibold ">Add Product</h1>
           <div className="w-[6rem]">
             <Button
-              to={"/seller/dashboard/products"}
+              to={'/seller/dashboard/products'}
               btnTxt="Products"
-              customeClass={"rounded-sm"}
+              customeClass={'rounded-sm'}
             />
           </div>
         </div>
@@ -145,26 +145,26 @@ const AddProduct = () => {
             <div className="flex flex-col mb-3 md:flex-row gap-4 w-full flex-wrap justify-start items-center ">
               <div className="lg:w-[48%] sm:w-full ">
                 <InputGroup
-                  lable={"Product Name"}
-                  htmlFor={"productName"}
-                  type={"text"}
-                  placeholder={"enter product name"}
+                  lable={'Product Name'}
+                  htmlFor={'productName'}
+                  type={'text'}
+                  placeholder={'enter product name'}
                 />
               </div>
               <div className="lg:w-[48%] sm:w-full ">
                 <InputGroup
-                  lable={"Brand"}
-                  htmlFor={"brand"}
-                  type={"text"}
-                  placeholder={"enter brand name"}
+                  lable={'Brand'}
+                  htmlFor={'brand'}
+                  type={'text'}
+                  placeholder={'enter brand name'}
                 />
               </div>
 
               <div className="lg:w-[48%] sm:w-full">
                 <SearchableSelect
-                  lable={"Category"}
-                  htmlFor={"category"}
-                  placeholder={"--select category--"}
+                  lable={'Category'}
+                  htmlFor={'category'}
+                  placeholder={'--select category--'}
                   options={allCategory}
                   value={selectedCategory && selectedCategory}
                   searchValue={searchValue}
@@ -179,41 +179,41 @@ const AddProduct = () => {
 
               <div className="lg:w-[48%] sm:w-full">
                 <InputGroup
-                  lable={"Stock"}
-                  htmlFor={"stock"}
-                  type={"text"}
-                  placeholder={"enter stock number"}
+                  lable={'Stock'}
+                  htmlFor={'stock'}
+                  type={'text'}
+                  placeholder={'enter stock number'}
                 />
               </div>
 
               <div className="lg:w-[48%] sm:w-full">
                 <InputGroup
-                  lable={"Price"}
-                  htmlFor={"price"}
-                  type={"number"}
-                  placeholder={"enter product price"}
+                  lable={'Price'}
+                  htmlFor={'price'}
+                  type={'number'}
+                  placeholder={'enter product price'}
                 />
               </div>
 
               <div className="lg:w-[48%] sm:w-full">
                 <InputGroup
-                  lable={"Discount"}
-                  htmlFor={"discount"}
-                  type={"number"}
-                  placeholder={"enter discount number in %"}
+                  lable={'Discount'}
+                  htmlFor={'discount'}
+                  type={'number'}
+                  placeholder={'enter discount number in %'}
                 />
               </div>
               <div className="w-[98%]">
                 <TextArea
-                  lable={"Description"}
-                  name={"description"}
-                  placeholder={"enter product description"}
-                  height={"h-[100px]"}
+                  lable={'Description'}
+                  name={'description'}
+                  placeholder={'enter product description'}
+                  height={'h-[100px]'}
                 />
               </div>
               <div className="w-[96%] grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 text-[#d0d2d6] mb-4">
                 {imageShow.map((image, i) => (
-                  <div className="h-[180px] relative">
+                  <div key={i} className="h-[180px] relative">
                     <label htmlFor={i} className="cursor-pointer">
                       <img
                         className="h-[100%]"
@@ -233,33 +233,18 @@ const AddProduct = () => {
                       className="p-2 bg-slate-700 z-10 hover:shadow-lg hover:shadow-slate-400/50 cursor-pointer absolute top-1 right-1 rounded-full "
                       onClick={() => removeUploadImage(i)}
                     >
-                      {" "}
-                      <IoMdCloseCircleOutline />{" "}
+                      {' '}
+                      <IoMdCloseCircleOutline />{' '}
                     </span>
                   </div>
                 ))}
-                <label
-                  htmlFor="image"
-                  className={`flex justify-center items-center flex-col border border-dashed hover:border-indigo-500 w-full text-[#d0d2d6] h-[180px] cursor-pointer ${
-                    imageShow.length >= 4 && "mt-4"
-                  }`}
-                >
-                  <span>
-                    <BsImages />
-                  </span>
-                  <span>Select Image</span>
-                </label>
-                <input
-                  multiple
-                  onChange={handleImageUpload}
-                  type="file"
-                  name="image"
-                  id="image"
-                  className="hidden"
-                />
+
+                <div className="w-[300px] h-[210px]">
+                  <ImgSelectBox htmlFor={'image'} onChange={handleImageUpload} />
+                </div>
               </div>
 
-              <Button btnTxt={"Add Product"} type="submit" />
+              <Button btnTxt={'Add Product'} type="submit" />
             </div>
           </form>
         </div>

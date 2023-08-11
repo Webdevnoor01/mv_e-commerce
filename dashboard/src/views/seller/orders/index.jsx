@@ -1,49 +1,51 @@
-import React, { useState } from "react";
+/* eslint-disable react/jsx-key */
+import React, { useState } from 'react';
 
 
 // custome & reusable option
-import Search from "../../../components/search";
-import Table from "../../../components/table";
-import Pagination from "../../../components/pagination";
-import Action from "../../../components/table-action";
+import Search from '../../../components/search';
+import Table from '../../../components/table';
+import Pagination from '../../../components/pagination';
+import Action from '../../../components/table-action';
 
 // react-icons
-import { FaEye } from "react-icons/fa"
+import { FaEye } from 'react-icons/fa'
 
 // We get the below table option from the database when we intigrate our backend api
 const tableOption = {
-    thead: ["Order Id", "Price", "Payment Status", "Order Status", "Action"],
+    thead: ['Order Id', 'Price', 'Payment Status', 'Order Status', 'Action'],
     tbody: {
       data1: {
         td: [
-          "#sladkfj34wer",
+          '#sladkfj34wer',
           <span>$1200</span>,
           <span> Pending </span>,
           <span>Processing</span>,
           <span className="flex justify-start items-center gap-1">
-            <Action to={"/seller/dashboard/order/1"} Icon={FaEye} bg={"bg-green-500"} shadow={"hover:bg-green-500/50"}  />
+            <Action to={'/seller/dashboard/order/details/1'} Icon={FaEye} bg={'bg-green-500'} shadow={'hover:bg-green-500/50'}  />
           </span>,
         ],
       },
       data2: {
         td: [
-            "#sladkfj34wer",
+            '#sladkfj34wer',
             <span>$1200</span>,
             <span> Pending </span>,
             <span>Processing</span>,
             <span className="flex justify-start items-center gap-1">
-              <Action to={"/seller/dashboard/order/1"} Icon={FaEye} bg={"bg-green-500"} shadow={"hover:bg-green-500/50"}  />
+              <Action to={'/seller/dashboard/order/details/2'} Icon={FaEye} bg={'bg-green-500'} shadow={'hover:bg-green-500/50'}  />
             </span>,
+            
           ],
       },
       data3: {
         td: [
-            "#sladkfj34wer",
+            '#sladkfj34wer',
             <span>$1200</span>,
             <span> Pending </span>,
             <span>Processing</span>,
             <span className="flex justify-start items-center gap-1">
-              <Action to={"/seller/dashboard/order/1"} Icon={FaEye} bg={"bg-green-500"} shadow={"hover:bg-green-500/50"}  />
+              <Action to={'/seller/dashboard/order/details/3'} Icon={FaEye} bg={'bg-green-500'} shadow={'hover:bg-green-500/50'}  />
             </span>,
           ],
       },

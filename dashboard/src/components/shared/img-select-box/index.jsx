@@ -1,12 +1,12 @@
 import React from 'react'
 
 // react-icons
-import {BsImages } from "react-icons/bs"
+import {BsImages } from 'react-icons/bs'
 
 // react-spinner
-import {FadeLoader } from "react-spinners"
+import {FadeLoader } from 'react-spinners'
 
-const ImgSelectBox = ({loader, htmlFor}) => {
+const ImgSelectBox = ({loader, htmlFor, onChange}) => {
   return (
     <>
     <label className='flex flex-col justify-center items-center w-full h-full border border-dashed hover:border-indigo-500 border-[#d0d2d6] relative cursor-pointer' htmlFor={htmlFor} >
@@ -21,7 +21,7 @@ const ImgSelectBox = ({loader, htmlFor}) => {
         )
     }
     </label>
-    <input type="file" name={htmlFor} id={htmlFor} className='hidden' />
+    <input type="file" name={htmlFor} id={htmlFor} className='hidden' onChange={onChange} />
     </>
   )
 }
