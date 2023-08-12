@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser")
 const router = require("./route")
 
 app.use(cores({
-    origin:["http://localhost:3000","http://192.168.107.190:3000/"],
+    origin:['http://localhost:3000'],
     credentials:true
 }))
 app.use(bodyParser.json())

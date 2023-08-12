@@ -1,31 +1,29 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from 'react';
 // react-router-dom
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 // react-redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
 // actions
-import { adminLogin, resetMessages } from "../../../store/Reducers/authSlice";
+import { adminLogin, resetMessages } from '../../../store/Reducers/authSlice';
 
 // UI components
-import Button from "../../../components/ui/button";
+import Button from '../../../components/ui/button';
 
 // Shared Components
-import InputGroup from "../../../components/shared/Input-group";
+import InputGroup from '../../../components/shared/Input-group';
 
 // Custom hooks
-import useForm from "../../../hooks/useForm";
+import useForm from '../../../hooks/useForm';
 
 // Admin Login form data
-import adminLoginObj from "./adminLogin.json";
+import adminLoginObj from './adminLogin.json';
 
-// Utilities
-import mapStateToValues from "../../../utils/mapStateToValues";
 
 // libraries
-import { toast } from "react-hot-toast";
-import { BeatLoader, BounceLoader, ClockLoader } from "react-spinners";
+import { toast } from 'react-hot-toast';
+import { BeatLoader } from 'react-spinners';
 
 const AdminLogin = () => {
   const { loading, errorMessage, successMessage } = useSelector(
@@ -37,7 +35,6 @@ const AdminLogin = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const adminLoginData = Object.values(adminLoginObj);
 
   useEffect(() => {
     console.log(errorMessage, successMessage);
@@ -46,10 +43,10 @@ const AdminLogin = () => {
     }
     if (successMessage) {
       toast.success(successMessage);
-      navigate("/");
+      navigate('/');
     }
     dispatch(resetMessages());
-  }, [successMessage, errorMessage]);
+  }, [successMessage, errorMessage, dispatch, navigate]);
   return (
     <div>
       <div className="min-w-screen min-h-screen bg-[#161d31] flex justify-center items-center">
@@ -99,18 +96,18 @@ const AdminLogin = () => {
 
             <form onSubmit={(e) => handleSubmit(e, adminLogin)}>
               <InputGroup
-                htmlFor={"email"}
-                lable={"Emial"}
-                type={"email"}
-                placeholder={"example@gmail.com"}
+                htmlFor={'email'}
+                lable={'Emial'}
+                type={'email'}
+                placeholder={'example@gmail.com'}
                 onChange={handleChange}
                 value={formState.email.value}
               />
               <InputGroup
-                htmlFor={"password"}
-                lable={"Password"}
-                type={"password"}
-                placeholder={"Hskdf32@..."}
+                htmlFor={'password'}
+                lable={'Password'}
+                type={'password'}
+                placeholder={'Hskdf32@...'}
                 onChange={handleChange}
                 value={formState.password.value}
               />
@@ -130,8 +127,8 @@ const AdminLogin = () => {
                 />
               ))} */}
               <Button
-                btnTxt={"Sign Up"}
-                type={"submit"}
+                btnTxt={'Sign Up'}
+                type={'submit'}
                 isLoading={loading}
                 IconLoading={<BeatLoader color="#ffffff" size="1.25rem" />}
               />

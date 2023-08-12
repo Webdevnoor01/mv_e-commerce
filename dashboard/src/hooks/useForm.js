@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 // react-redux
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 
 // Utilities
-import mapValuesToState from "../utils/mapValuesToState";
-import mapStateToValues from "../utils/mapStateToValues";
+import mapValuesToState from '../utils/mapValuesToState';
+import mapStateToValues from '../utils/mapStateToValues';
 
 const useForm = ({ formState }) => {
   const dispatch = useDispatch()
@@ -24,6 +24,7 @@ const useForm = ({ formState }) => {
 
   const handleSubmit = (e, action) => {
     e.preventDefault();
+    console.log(mapStateToValues(state))
     dispatch(action(mapStateToValues(state)))
   };
 
@@ -39,7 +40,7 @@ const useForm = ({ formState }) => {
   }
 
   const handleBlur = (e) =>{
-    console.log("handleBlur")
+    console.log('handleBlur')
     setState(prevState =>( {
       ...prevState,
       [e.target.name]: {

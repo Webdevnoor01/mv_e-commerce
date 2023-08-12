@@ -12,6 +12,7 @@ const returnResponse = require("../utils/response");
 class AuthController {
   async admin_login(req, res) {
     const { email, password } = req.body;
+    console.log(req.body)
     try {
       const admin = await Admin.findOne({ email: email }).select("+password");
       if (admin) {
@@ -55,6 +56,12 @@ class AuthController {
       });
       console.log("authController:Error-> ", error);
     }
+  }
+  async seller_register(req, res) {
+    console.log('body ', req.body)
+    res.status(200).json({
+        message:'its working'
+    })
   }
 
   async getUser(req, res) {

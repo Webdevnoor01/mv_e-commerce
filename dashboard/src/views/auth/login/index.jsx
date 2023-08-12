@@ -1,31 +1,36 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+/* eslint-disable react/no-unescaped-entities */
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // React icons
-import { AiOutlineGooglePlus, AiOutlineGithub } from "react-icons/ai";
-import { CiTwitter } from "react-icons/ci";
-import { FiFacebook } from "react-icons/fi";
+import { AiOutlineGooglePlus, AiOutlineGithub } from 'react-icons/ai';
+import { CiTwitter } from 'react-icons/ci';
+import { FiFacebook } from 'react-icons/fi';
 
 // Shared Components
-import SignupOption from "../../../components/shared/signup-option";
-import InputGroup from "../../../components/shared/Input-group";
-import Button from "../../../components/ui/button";
+import SignupOption from '../../../components/shared/signup-option';
+import InputGroup from '../../../components/shared/Input-group';
+import Button from '../../../components/ui/button';
 
 // Custome Hooks
-import useForm from "../../../hooks/useForm";
+import useForm from '../../../hooks/useForm';
 
 // register form initial state
-import loginFormObj from "./login.json";
+import loginFormObj from './login.json';
 
 // libraries
-import { toast } from "react-hot-toast";
+import { toast } from 'react-hot-toast';
+
+// react-spinner
+import { PropagateLoader } from 'react-spinners';
 
 // Utilities
-import mapValuesToState from "../../../utils/mapValuesToState";
-import { useDispatch, useSelector } from "react-redux";
-import { resetMessages } from "../../../store/Reducers/authSlice";
+import mapValuesToState from '../../../utils/mapValuesToState';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetMessages } from '../../../store/Reducers/authSlice';
 
 const Login = () => {
+  const { loading } = useSelector((state) => state.auth);
   //   const [formState, setFormState] = useState(mapValuesToState(loginFormObj));
   const { formState, handleChange, handleSubmit } = useForm({
     formState: loginFormObj,
@@ -42,22 +47,28 @@ const Login = () => {
 
           <form onSubmit={(e) => handleSubmit(e)}>
             <InputGroup
-              htmlFor={"email"}
-              lable={"Emial"}
-              type={"email"}
-              placeholder={"example@gmail.com"}
+              htmlFor={'email'}
+              lable={'Emial'}
+              type={'email'}
+              placeholder={'example@gmail.com'}
               onChange={handleChange}
               value={formState.email.value}
             />
             <InputGroup
-              htmlFor={"password"}
-              lable={"Password"}
-              type={"password"}
-              placeholder={"Hskdf32@..."}
+              htmlFor={'password'}
+              lable={'Password'}
+              type={'password'}
+              placeholder={'Hskdf32@...'}
               onChange={handleChange}
               value={formState.password.value}
             />
-            <Button btnTxt={"LOGIN"} type={"submit"} />
+            <Button
+              btnTxt={'LOGIN'}
+              type={'submit'}
+              btnHandler={handleSubmit}
+              isLoading={loading}
+              IconLoading={PropagateLoader}
+            />
             <div className="flex item-center mb-3 gap-3 justify-center">
               <p>
                 Don't have an account ? <Link to="/register">SignUp here</Link>
@@ -73,12 +84,12 @@ const Login = () => {
 
             <div className="flex justify-center items-center gap-3">
               <SignupOption
-                bgColor={"bg-orange-700"}
+                bgColor={'bg-orange-700'}
                 Icon={AiOutlineGooglePlus}
               />
-              <SignupOption bgColor={"bg-indigo-700"} Icon={FiFacebook} />
-              <SignupOption bgColor={"bg-cyan-700"} Icon={CiTwitter} />
-              <SignupOption bgColor={"bg-purple-700"} Icon={AiOutlineGithub} />
+              <SignupOption bgColor={'bg-indigo-700'} Icon={FiFacebook} />
+              <SignupOption bgColor={'bg-cyan-700'} Icon={CiTwitter} />
+              <SignupOption bgColor={'bg-purple-700'} Icon={AiOutlineGithub} />
             </div>
           </form>
         </div>
