@@ -5,6 +5,12 @@ import { useNavigate } from 'react-router-dom';
 // react-redux
 import { useDispatch, useSelector } from 'react-redux';
 
+// react-hook-form
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+// eslint-disable-next-line quotes
+import * as yup from "yup";
+
 // actions
 import { adminLogin, resetMessages } from '../../../store/Reducers/authSlice';
 
@@ -14,12 +20,8 @@ import Button from '../../../components/ui/button';
 // Shared Components
 import InputGroup from '../../../components/shared/Input-group';
 
-// Custom hooks
-import useForm from '../../../hooks/useForm';
-
 // Admin Login form data
-import adminLoginObj from './adminLogin.json';
-
+// import adminLoginObj from './adminLogin.json';
 
 // libraries
 import { toast } from 'react-hot-toast';
@@ -29,10 +31,42 @@ const AdminLogin = () => {
   const { loading, errorMessage, successMessage } = useSelector(
     (state) => state.auth
   );
-  const { formState, handleChange, handleSubmit } = useForm({
-    formState: adminLoginObj,
+  const formValidationSchema = yup.object().shape({
+    email: yup
+      .string()
+      .email('please enter valid email')
+      .required('email is required'),
+    password: yup
+      .string()
+      .min(8, 'Password must be at least 8 characters long')
+      .max(32, 'Password cannot be longer than 32 characters')
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/,
+        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+      )
+      .required('Password is required'),
+  });
+  const {
+    formState: { errors },
+    control,
+    handleSubmit,
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    resolver: yupResolver(formValidationSchema),
+    reValidateMode: 'onChange',
   });
 
+  const onValid = (data) => {
+    console.log(data);
+    dispatch(adminLogin(data));
+  };
+
+  const onInvalid = (errors) => {
+    console.log('errors: ', errors);
+  };
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -62,7 +96,6 @@ const AdminLogin = () => {
                 <defs id="SvgjsDefs1344"></defs>
                 <g
                   id="SvgjsG1345"
-                  featurekey="symbolFeature-0"
                   transform="matrix(1.5217391304347827,0,0,1.5217391304347827,-7.608695652173914,-7.608695652173914)"
                   fill="#a6acec"
                 >
@@ -85,7 +118,6 @@ const AdminLogin = () => {
                 </g>
                 <g
                   id="SvgjsG1346"
-                  featurekey="nameFeature-0"
                   transform="matrix(1.5648594962796947,0,0,1.5648594962796947,93.12065847461254,-8.526427552225627)"
                   fill="#a56cc1"
                 >
@@ -94,38 +126,40 @@ const AdminLogin = () => {
               </svg>
             </div>
 
-            <form onSubmit={(e) => handleSubmit(e, adminLogin)}>
-              <InputGroup
-                htmlFor={'email'}
-                lable={'Emial'}
-                type={'email'}
-                placeholder={'example@gmail.com'}
-                onChange={handleChange}
-                value={formState.email.value}
+            <form onSubmit={handleSubmit(onValid, onInvalid)}>
+              <Controller
+                name="email"
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <InputGroup
+                    htmlFor="email"
+                    lable="Email"
+                    type="email"
+                    placeholder="example123@gmail.com"
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    error={errors.email?.message}
+                  />
+                )}
               />
-              <InputGroup
-                htmlFor={'password'}
-                lable={'Password'}
-                type={'password'}
-                placeholder={'Hskdf32@...'}
-                onChange={handleChange}
-                value={formState.password.value}
+
+              <Controller
+                name="password"
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <InputGroup
+                    htmlFor="password"
+                    lable="Password"
+                    type="password"
+                    placeholder="Abcd@1234"
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    error={errors.password?.message}
+                  />
+                )}
               />
-              {/* {adminLoginData.map((data) => (
-                <InputGroup
-                  inputRef={inputRef}
-                  key={shortid.generate()}
-                  htmlFor={data.name}
-                  lable={data.label}
-                  type={data.type}
-                  placeholder={data.placeHolder}
-                  onChange={(e) => handleChange(e, inputRef)}
-                  value={formState[data.name].value}
-                  onClick={handleClick}
-                  isActive={formState[data.name].active}
-                  onBlur={handleBlur}
-                />
-              ))} */}
               <Button
                 btnTxt={'Sign Up'}
                 type={'submit'}

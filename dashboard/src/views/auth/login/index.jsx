@@ -1,6 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+
+// react-router-dom
+import { Link, useNavigate } from 'react-router-dom';
+
+// react-hook-form
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+// eslint-disable-next-line quotes
+import * as yup from "yup";
 
 // React icons
 import { AiOutlineGooglePlus, AiOutlineGithub } from 'react-icons/ai';
@@ -12,11 +20,8 @@ import SignupOption from '../../../components/shared/signup-option';
 import InputGroup from '../../../components/shared/Input-group';
 import Button from '../../../components/ui/button';
 
-// Custome Hooks
-import useForm from '../../../hooks/useForm';
-
 // register form initial state
-import loginFormObj from './login.json';
+// import loginFormObj from './login.json';
 
 // libraries
 import { toast } from 'react-hot-toast';
@@ -25,16 +30,62 @@ import { toast } from 'react-hot-toast';
 import { PropagateLoader } from 'react-spinners';
 
 // Utilities
-import mapValuesToState from '../../../utils/mapValuesToState';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetMessages } from '../../../store/Reducers/authSlice';
 
 const Login = () => {
-  const { loading } = useSelector((state) => state.auth);
-  //   const [formState, setFormState] = useState(mapValuesToState(loginFormObj));
-  const { formState, handleChange, handleSubmit } = useForm({
-    formState: loginFormObj,
+  const { loading, errorMessage, successMessage } = useSelector(
+    (state) => state.auth
+  );
+  const formValidationSchema = yup.object().shape({
+    email: yup
+      .string()
+      .email('please enter valid email')
+      .required('email is required'),
+    password: yup
+      .string()
+      .min(8, 'Password must be at least 8 characters long')
+      .max(32, 'Password cannot be longer than 32 characters')
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/,
+        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+      )
+      .required('Password is required'),
   });
+  const {
+    formState: { errors },
+    control,
+    handleSubmit,
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    resolver: yupResolver(formValidationSchema),
+    reValidateMode: 'onChange',
+  });
+
+  const onValid = (data) => {
+    console.log(data);
+  };
+
+  const onInvalid = (errors) => {
+    console.log('errors: ', errors);
+  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(errorMessage, successMessage);
+    if (errorMessage) {
+      toast.error(errorMessage);
+    }
+    if (successMessage) {
+      toast.success(successMessage);
+      navigate('/');
+    }
+    dispatch(resetMessages());
+  }, [successMessage, errorMessage, dispatch, navigate]);
 
   return (
     <div className="min-w-screen min-h-screen bg-[#161d31] flex justify-center items-center">
@@ -45,22 +96,39 @@ const Login = () => {
             Please signin to your account and start your bussiness
           </p>
 
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <InputGroup
-              htmlFor={'email'}
-              lable={'Emial'}
-              type={'email'}
-              placeholder={'example@gmail.com'}
-              onChange={handleChange}
-              value={formState.email.value}
+          <form onSubmit={ handleSubmit(onValid, onInvalid)}>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <InputGroup
+                  htmlFor="email"
+                  lable="Email"
+                  type="email"
+                  placeholder="example123@gmail.com"
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  error={errors.email?.message}
+                />
+              )}
             />
-            <InputGroup
-              htmlFor={'password'}
-              lable={'Password'}
-              type={'password'}
-              placeholder={'Hskdf32@...'}
-              onChange={handleChange}
-              value={formState.password.value}
+
+            <Controller
+              name="password"
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <InputGroup
+                  htmlFor="password"
+                  lable="Password"
+                  type="password"
+                  placeholder="Abcd@1234"
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  error={errors.password?.message}
+                />
+              )}
             />
             <Button
               btnTxt={'LOGIN'}
