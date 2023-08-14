@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
 
+// react-redux
+import { useDispatch} from "react-redux"
+
 // react-hook-form
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -20,11 +23,12 @@ import Button from '../../../components/ui/button';
 // import useForm from '../../../hooks/useForm';
 
 // Actions
-// import { seller_register } from '../../../store/Reducers/authSlice';
+import { seller_register } from '../../../store/Reducers/authSlice';
 
 
 const Register = () => {
 
+  const dispatch = useDispatch()
   const formValidationSchema = yup.object().shape({
     name:yup.string().required('name is required'),
     email:yup.string().email('please enter valid email').required('email is required'),
@@ -54,6 +58,7 @@ const Register = () => {
 
   const onValid = (data) => {
     console.log(data);
+    dispatch(seller_register(data))
   };
 
   const onInvalid =(errors) => {
