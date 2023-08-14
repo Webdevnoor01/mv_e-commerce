@@ -1,4 +1,5 @@
 const Admin = require("../models/adminModel");
+const Seller = require("../models/sellerModel")
 
 // libraries
 const bcrypt = require("bcrypt");
@@ -10,9 +11,10 @@ const tokenService = require("../services/token");
 const returnResponse = require("../utils/response");
 
 class AuthController {
+
+
   async admin_login(req, res) {
     const { email, password } = req.body;
-    console.log(req.body)
     try {
       const admin = await Admin.findOne({ email: email }).select("+password");
       if (admin) {
@@ -57,11 +59,35 @@ class AuthController {
       console.log("authController:Error-> ", error);
     }
   }
+
   async seller_register(req, res) {
-    console.log('body ', req.body)
-    res.status(200).json({
-        message:'its working'
+   const {name ,email, password} = req.body
+   try {
+    const user = await Seller.findOne({email:email})
+    if(user){
+      returnResponse(res, 400, {
+        message:"Email already in used."
+      })
+    }
+
+    // hash the password
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const userPayload = {
+      name,
+      email,
+      password:hashedPassword,
+      methode:"manualy"
+    }
+    
+    const newUser = await Seller.create(userPayload)
+
+    returnResponse(res, 201, {
+      message:"User created successfully",
+      user:newUser
     })
+   } catch (error) {
+    
+   }
   }
 
   async getUser(req, res) {
