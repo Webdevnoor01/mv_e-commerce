@@ -29,7 +29,7 @@ import Button from "../../../components/ui/button";
 // Actions
 import {
   resetMessages,
-  seller_register,
+  sellerRegister,
 } from "../../../store/Reducers/authSlice";
 
 // third-party libraries
@@ -76,7 +76,7 @@ const Register = () => {
       role: "seller",
     };
     console.log(payload);
-    dispatch(seller_register(payload));
+    dispatch(sellerRegister(payload));
   };
 
   const onInvalid = (errors) => {
