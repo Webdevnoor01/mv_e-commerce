@@ -12,14 +12,23 @@ const SellerAdminChat = lazy(() => import('../../views/seller/seller-admin-chat'
 const SellerCustomerChat = lazy(() => import('../../views/seller/seller-customer-chat'))
 const Profile = lazy(() => import('../../views/seller/profile'))
 const EditProduct = lazy(() => import('../../views/seller/edit-product'))
+const AccountPending = lazy(() => import('../../views/seller/account-pending'))
+const AccountDeactive = lazy(() => import('../../views/seller/account-deactive'))
 
 export const sellerRoutes = [
     {
-        path:'/',
-        element:<Suspense fallback="Loading..." >
-            <Home />
+        path:'/seller/account-pending',
+        element:<Suspense fallback={null} >
+            <AccountPending />
         </Suspense>,
-        ability:['admin', 'seller']
+        ability:'admin'
+    },
+    {
+        path:'/seller/account-deactive',
+        element:<Suspense fallback={null} >
+            <AccountDeactive />
+        </Suspense>,
+        ability:'admin'
     },
     {
         path:'/seller/dashboard',
@@ -42,7 +51,8 @@ export const sellerRoutes = [
         element:<Suspense fallback="Loading..." >
             <EditProduct />
         </Suspense>,
-        ability:[ 'seller']
+        role:'seller',
+        status:'active'
     },
     {
         path:'/seller/dashboard/products',
@@ -66,7 +76,7 @@ export const sellerRoutes = [
             <Orders />
         </Suspense>,
         role:'seller',
-        ability:[ 'active', 'deactive']
+        visibility:[ 'active', 'deactive']
     },
     {
         path:'/seller/dashboard/order/details/:orderId',
@@ -74,7 +84,7 @@ export const sellerRoutes = [
             <OrderDetails />
         </Suspense>,
         role:'seller',
-        ability:[ 'active', 'deactive']
+        visibility:[ 'active', 'deactive']
     },
     {
         path:'/seller/dashboard/payments',
@@ -90,7 +100,7 @@ export const sellerRoutes = [
             <SellerCustomerChat />
         </Suspense>,
         role:'seller',
-        ability:[ 'active', 'deactive', 'pending']
+        status:'active'
     },
     {
         path:'/seller/dashboard/chat-sellers/:customerId',
@@ -98,21 +108,22 @@ export const sellerRoutes = [
             <SellerCustomerChat />
         </Suspense>,
         role:'seller',
-        ability:[ 'active', 'deactive', 'pending']
+        status:'active'
     },
     {
         path:'/seller/dashboard/chat-support',
         element:<Suspense fallback="Loading..." >
             <SellerAdminChat />
         </Suspense>,
-        ability:[ 'seller']
+          role:'seller',
+          visibility:[ 'active', 'deactive', 'pending']
     },
     {
         path:'/seller/dashboard/profile',
         element:<Suspense fallback="Loading..." >
             <Profile />
         </Suspense>,
-        ability:[ 'seller']
+        visibility:['active', 'deactive', 'pending']
     },
     
 ]

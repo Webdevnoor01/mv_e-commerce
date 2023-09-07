@@ -3,15 +3,16 @@ import { Link, useLocation } from "react-router-dom";
 
 import { getNavs } from "../navigation";
 import NavItem from "../components/ui/nav-item";
+import { useSelector } from "react-redux";
 const Sidebar = ({ showSidebar, setShowSidebar }) => {
+  const { userInfo: { role} } = useSelector(state => state.auth)
   const [navItems, setNavItems] = useState([]);
 
   const { pathname } = useLocation();
 
   useEffect(() => {
-    setNavItems(getNavs("seller"));
-  }, []);
-  console.log("navItems: ", navItems);
+    setNavItems(getNavs(role));
+  }, [role]);
   return (
     <div>
       <div

@@ -27,16 +27,19 @@ import Button from '../../../components/ui/button';
 import { toast } from 'react-hot-toast';
 
 // react-spinner
-import { PropagateLoader } from 'react-spinners';
+import { BeatLoader, PropagateLoader } from 'react-spinners';
 
 // Utilities
 import { useDispatch, useSelector } from 'react-redux';
-import { resetMessages } from '../../../store/Reducers/authSlice';
+import { resetMessages, sellerLogin } from '../../../store/Reducers/authSlice';
 
 const Login = () => {
   const { loading, errorMessage, successMessage } = useSelector(
     (state) => state.auth
   );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const formValidationSchema = yup.object().shape({
     email: yup
       .string()
@@ -67,16 +70,15 @@ const Login = () => {
 
   const onValid = (data) => {
     console.log(data);
+    dispatch(sellerLogin(data))
   };
 
   const onInvalid = (errors) => {
     console.log('errors: ', errors);
   };
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+
 
   useEffect(() => {
-    console.log(errorMessage, successMessage);
     if (errorMessage) {
       toast.error(errorMessage);
     }
@@ -85,7 +87,7 @@ const Login = () => {
       navigate('/');
     }
     dispatch(resetMessages());
-  }, [successMessage, errorMessage, dispatch, navigate]);
+  }, [successMessage, errorMessage]);
 
   return (
     <div className="min-w-screen min-h-screen bg-[#161d31] flex justify-center items-center">
@@ -135,7 +137,7 @@ const Login = () => {
               type={'submit'}
               btnHandler={handleSubmit}
               isLoading={loading}
-              IconLoading={PropagateLoader}
+              IconLoading={<BeatLoader color="#ffffff" size="1.25rem" />}
             />
             <div className="flex item-center mb-3 gap-3 justify-center">
               <p>

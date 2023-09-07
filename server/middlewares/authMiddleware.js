@@ -6,17 +6,25 @@ class AuthMiddleware {
     const { accessToken } = req.cookies;
     try {
       if (!accessToken) {
-        returnResponse(res, 409, {
+        returnResponse(res, 401, {
           status: "Bad",
           message: "Unauthorized access",
         });
       }
 
       const user = await jwt.verify(accessToken, process.env.JWT_SECRET);
+      if(!user){
+        return returnResponse(
+          res, 401, {
+            statsu:"Bad",
+            message:"Unauthorized access"
+          }
+        )
+      }
       req.user = user;
       next();
     } catch (error) {
-      returnResponse(res, 409, {
+      returnResponse(res, 401, {
         status: "Bad",
         message: "Unauthorized access",
       });

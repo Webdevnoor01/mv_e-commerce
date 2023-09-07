@@ -1,50 +1,52 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 // react-router-dom
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 // react-redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
 // react-hook-form
-import { Controller, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 // eslint-disable-next-line quotes
 import * as yup from "yup";
 
 // actions
-import { adminLogin, resetMessages } from '../../../store/Reducers/authSlice';
+import { adminLogin, getUserInfo, resetMessages } from "../../../store/Reducers/authSlice";
 
 // UI components
-import Button from '../../../components/ui/button';
+import Button from "../../../components/ui/button";
 
 // Shared Components
-import InputGroup from '../../../components/shared/Input-group';
+import InputGroup from "../../../components/shared/Input-group";
 
 // Admin Login form data
 // import adminLoginObj from './adminLogin.json';
 
 // libraries
-import { toast } from 'react-hot-toast';
-import { BeatLoader } from 'react-spinners';
+import { toast } from "react-hot-toast";
+import { BeatLoader } from "react-spinners";
 
 const AdminLogin = () => {
-  const { loading, errorMessage, successMessage } = useSelector(
+  const { loading, errorMessage, successMessage, token } = useSelector(
     (state) => state.auth
   );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const formValidationSchema = yup.object().shape({
     email: yup
       .string()
-      .email('please enter valid email')
-      .required('email is required'),
+      .email("please enter valid email")
+      .required("email is required"),
     password: yup
       .string()
-      .min(8, 'Password must be at least 8 characters long')
-      .max(32, 'Password cannot be longer than 32 characters')
+      .min(8, "Password must be at least 8 characters long")
+      .max(32, "Password cannot be longer than 32 characters")
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/,
-        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+        "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
       )
-      .required('Password is required'),
+      .required("Password is required"),
   });
   const {
     formState: { errors },
@@ -52,11 +54,11 @@ const AdminLogin = () => {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     resolver: yupResolver(formValidationSchema),
-    reValidateMode: 'onChange',
+    reValidateMode: "onChange",
   });
 
   const onValid = (data) => {
@@ -65,10 +67,8 @@ const AdminLogin = () => {
   };
 
   const onInvalid = (errors) => {
-    console.log('errors: ', errors);
+    console.log("errors: ", errors);
   };
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     console.log(errorMessage, successMessage);
@@ -77,10 +77,16 @@ const AdminLogin = () => {
     }
     if (successMessage) {
       toast.success(successMessage);
-      navigate('/');
+      navigate("/");
     }
-    dispatch(resetMessages());
-  }, [successMessage, errorMessage, dispatch, navigate]);
+
+    return () => {
+      dispatch(resetMessages());
+    };
+  }, [successMessage, errorMessage]);
+
+
+
   return (
     <div>
       <div className="min-w-screen min-h-screen bg-[#161d31] flex justify-center items-center">
@@ -161,8 +167,8 @@ const AdminLogin = () => {
                 )}
               />
               <Button
-                btnTxt={'Sign Up'}
-                type={'submit'}
+                btnTxt={"Sign Up"}
+                type={"submit"}
                 isLoading={loading}
                 IconLoading={<BeatLoader color="#ffffff" size="1.25rem" />}
               />
