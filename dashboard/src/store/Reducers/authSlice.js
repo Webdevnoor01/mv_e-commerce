@@ -10,10 +10,9 @@ export const adminLogin = createAsyncThunk(
   "auth/admin-login",
   async (payload, { rejectWithValue, fulfillWithValue }) => {
     try {
-      const adminInfo = await api.post("/admin/login", payload, {
+      const adminInfo = await api.post("/auth/admin/login", payload, {
         withCredentials: true,
       });
-      console.log("data", adminInfo.data);
       if (adminInfo.data.token) {
         localStorage.setItem("accessToken", adminInfo.data.token);
       }
@@ -32,7 +31,6 @@ export const sellerLogin = createAsyncThunk(
       const sellerInfo = await api.post("/auth/seller/login", payload, {
         withCredentials: true,
       });
-      console.log("data", sellerInfo.data);
       if (sellerInfo.data.token) {
         localStorage.setItem("accessToken", sellerInfo.data.token);
       }
@@ -78,12 +76,10 @@ const returnRole =  (token) => {
     let decodeToken =  jwt(token);
     console.log(decodeToken);
     const expireTime = new Date(decodeToken.exp * 1000).getTime()
-    console.log(new Date().getTime(), expireTime);
     if (new Date().getTime() > expireTime) {
       localStorage.removeItem("accessToken");
       return "";
     } else {
-      console.log("returning role ", decodeToken.role)
       return decodeToken.role;
     }
   } else {
@@ -91,7 +87,6 @@ const returnRole =  (token) => {
   }
 };
 
-console.log("returnRole ", returnRole(localStorage.getItem('accessToken')))
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -114,6 +109,7 @@ const authSlice = createSlice({
     },
     [adminLogin.fulfilled]: (state, action) => {
       state.token = action.payload.token;
+      state.role = action.payload.user.role
 
       state.successMessage = action.payload.message;
       state.userInfo = action.payload.user;
@@ -143,10 +139,12 @@ const authSlice = createSlice({
       state.loading = true;
     },
     [sellerLogin.fulfilled]: (state, action) => {
-      state.loading = false;
-
+      state.token = action.payload.token;
+      state.role = action.payload.user.role
+      
       state.successMessage = action.payload.message;
       state.userInfo = action.payload.user;
+      state.loading = false;
     },
     [sellerLogin.rejected]: (state, action) => {
       state.errorMessage = action.payload.message;

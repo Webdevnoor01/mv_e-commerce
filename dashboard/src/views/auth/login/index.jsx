@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 
 // react-router-dom
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 // react-hook-form
 import { Controller, useForm } from 'react-hook-form';
@@ -34,7 +34,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { resetMessages, sellerLogin } from '../../../store/Reducers/authSlice';
 
 const Login = () => {
-  const { loading, errorMessage, successMessage } = useSelector(
+  const { loading, errorMessage, successMessage, role, userInfo } = useSelector(
     (state) => state.auth
   );
   const dispatch = useDispatch();
@@ -89,6 +89,18 @@ const Login = () => {
     dispatch(resetMessages());
   }, [successMessage, errorMessage]);
 
+  if(role ){
+    if(role === "admin"){
+      console.log("redirecting to admin ")
+      return <Navigate to={"/admin/dashboard"} replace />
+    }
+
+    if(role === "seller"){
+      console.log("redirecting to seller ")
+
+      return <Navigate to={"/seller/dashboard"} replace />
+    }
+  }
   return (
     <div className="min-w-screen min-h-screen bg-[#161d31] flex justify-center items-center">
       <div className="w-[350px] text-[#d0d2d6] p-2">
@@ -137,7 +149,7 @@ const Login = () => {
               type={'submit'}
               btnHandler={handleSubmit}
               isLoading={loading}
-              IconLoading={<BeatLoader color="#ffffff" size="1.25rem" />}
+              IconLoading={<BeatLoader color="#ffffff" size="1.2rem" />}
             />
             <div className="flex item-center mb-3 gap-3 justify-center">
               <p>

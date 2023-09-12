@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+// react-redux
+import { useDispatch, useSelector } from "react-redux";
 
 // React icons
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -14,140 +17,217 @@ import InputGroup from "../../../components/shared/Input-group";
 import Action from "../../../components/table-action";
 import Pagination from "../../../components/pagination";
 import Button from "../../../components/ui/button";
-import Select from "../../../components/shared/select"
+import Select from "../../../components/shared/select";
 
 // react spinner
-import { PropagateLoader } from "react-spinners";
+import { BeatLoader } from "react-spinners";
 import { overrideStyle } from "../../../utils/overrideStyle";
 
-const Category = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchData, setSearchData] = useState("");
-  const [parPage, setParPage] = useState(10);
-  const [show, setShow] = useState(false);
-  const [imageShow, setImageShow] = useState(false);
-  const [state, setState] = useState("");
-  const [loader, setLoader] = useState(false);
+// actions
+import { addCategoryIntoDB, getCategoryFromDB, resetCategoryMessages } from "../../../store/Reducers/categorySlice";
 
-  const tableOption = {
-    thead: ["No", "Image", "Name", "Actions"],
-    tbody: {
-      data1: {
-        td: [
-          1,
-          <div className="w-[2.8125rem] h-[2.8125rem]">
-            <img
-              className=" h-[100%] "
-              src="../../../images/category/1.png"
-              alt=""
-            />
-          </div>,
-          ,
-          <span> sports </span>,
-          <span className="flex justify-start items-center gap-1">
-            <Action Icon={FaEdit} bg={"bg-yellow-500"} />
-            <Action Icon={FaTrash} bg={"bg-red-500"} />
-          </span>,
-        ],
-      },
-      data2: {
-        td: [
-          2,
-          <div className="w-[2.8125rem] h-[2.8125rem]">
-            <img
-              className="h-[100%] "
-              src="../../../images/category/2.png"
-              alt=""
-            />
-          </div>,
-          ,
-          <span> Accessories </span>,
-          <span className="flex justify-start items-center gap-1">
-            <Action Icon={FaEdit} bg={"bg-yellow-500"} />
-            <Action Icon={FaTrash} bg={"bg-red-500"} />
-          </span>,
-        ],
-      },
-      data3: {
-        td: [
-          3,
-          <div className="w-[2.8125rem] h-[2.8125rem]">
-            <img
-              className="h-[100%] "
-              src="../../../images/category/4.png"
-              alt=""
-            />
-          </div>,
-          ,
-          <span> Headphones </span>,
-          <span className="flex justify-start items-center gap-1">
-            <Action Icon={FaEdit} bg={"bg-yellow-500"} />
-            <Action Icon={FaTrash} bg={"bg-red-500"} />
-          </span>,
-        ],
-      },
-      data4: {
-        td: [
-          3,
-          <div className="w-[2.8125rem] h-[2.8125rem]">
-            <img
-              className="h-[100%] "
-              src="../../../images/category/5.png"
-              alt=""
-            />
-          </div>,
-          ,
-          <span> Laptop </span>,
-          <span className="flex justify-start items-center gap-1">
-            <Action Icon={FaEdit} bg={"bg-yellow-500"} />
-            <Action Icon={FaTrash} bg={"bg-red-500"} />
-          </span>,
-        ],
-      },
-      data5: {
-        td: [
-          3,
-          <div className="w-[2.8125rem] h-[2.8125rem]">
-            <img
-              className="h-[100%] "
-              src="../../../images/category/5.png"
-              alt=""
-            />
-          </div>,
-          ,
-          <span> Laptop </span>,
-          <span className="flex justify-start items-center gap-1">
-            <Action Icon={FaEdit} bg={"bg-yellow-500"} />
-            <Action Icon={FaTrash} bg={"bg-red-500"} />
-          </span>,
-        ],
-      },
+// thirt-party utility libraries
+import { toast } from "react-hot-toast"
+
+const tableOption = {
+  thead: ["No", "Image", "Name", "Actions"],
+  tbody: {
+    data1: {
+      td: [
+        1,
+        <div className="w-[2.8125rem] h-[2.8125rem]">
+          <img
+            className=" h-[100%] "
+            src="../../../images/category/1.png"
+            alt=""
+          />
+        </div>,
+        ,
+        <span> sports </span>,
+        <span className="flex justify-start items-center gap-1">
+          <Action Icon={FaEdit} bg={"bg-yellow-500"} />
+          <Action Icon={FaTrash} bg={"bg-red-500"} />
+        </span>,
+      ],
     },
+    data2: {
+      td: [
+        2,
+        <div className="w-[2.8125rem] h-[2.8125rem]">
+          <img
+            className="h-[100%] "
+            src="../../../images/category/2.png"
+            alt=""
+          />
+        </div>,
+        ,
+        <span> Accessories </span>,
+        <span className="flex justify-start items-center gap-1">
+          <Action Icon={FaEdit} bg={"bg-yellow-500"} />
+          <Action Icon={FaTrash} bg={"bg-red-500"} />
+        </span>,
+      ],
+    },
+    data3: {
+      td: [
+        3,
+        <div className="w-[2.8125rem] h-[2.8125rem]">
+          <img
+            className="h-[100%] "
+            src="../../../images/category/4.png"
+            alt=""
+          />
+        </div>,
+        ,
+        <span> Headphones </span>,
+        <span className="flex justify-start items-center gap-1">
+          <Action Icon={FaEdit} bg={"bg-yellow-500"} />
+          <Action Icon={FaTrash} bg={"bg-red-500"} />
+        </span>,
+      ],
+    },
+    data4: {
+      td: [
+        3,
+        <div className="w-[2.8125rem] h-[2.8125rem]">
+          <img
+            className="h-[100%] "
+            src="../../../images/category/5.png"
+            alt=""
+          />
+        </div>,
+        ,
+        <span> Laptop </span>,
+        <span className="flex justify-start items-center gap-1">
+          <Action Icon={FaEdit} bg={"bg-yellow-500"} />
+          <Action Icon={FaTrash} bg={"bg-red-500"} />
+        </span>,
+      ],
+    },
+    data5: {
+      td: [
+        3,
+        <div className="w-[2.8125rem] h-[2.8125rem]">
+          <img
+            className="h-[100%] "
+            src="../../../images/category/5.png"
+            alt=""
+          />
+        </div>,
+        ,
+        <span> Laptop </span>,
+        <span className="flex justify-start items-center gap-1">
+          <Action Icon={FaEdit} bg={"bg-yellow-500"} />
+          <Action Icon={FaTrash} bg={"bg-red-500"} />
+        </span>,
+      ],
+    },
+  },
+};
+
+const pageNumSelectOpt = [
+  {
+    id: shortid.generate(),
+    value: 5,
+    text: 5,
+  },
+  {
+    id: shortid.generate(),
+    value: 10,
+    text: 10,
+  },
+  {
+    id: shortid.generate(),
+    value: 20,
+    text: 20,
+  },
+];
+const Category = () => {
+  const { loading, errorMessage, successMessage } = useSelector((state) => state.category);
+  const dispatch = useDispatch()
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [parPage, setParPage] = useState(10);
+  const [searchValue, setSearchValue] = useState('')
+  const [show, setShow] = useState(false);
+  const [imageShow, setImageShow] = useState('');
+
+  const [categoryState, setCategoryState] = useState({
+    categoryName: "",
+    image: {},
+  });
+
+  const handleOnChange = (e) => {
+    if (e.target.name === "categoryName") {
+      setCategoryState({
+        ...categoryState,
+        [e.target.name]: e.target.value,
+      });
+    }
+
+    if (e.target.name === "image") {
+      let files = e.target.files;
+      if (files.length > 0) {
+        setImageShow(URL.createObjectURL(files[0]));
+        setCategoryState({
+          ...categoryState,
+          [e.target.name]: files[0],
+        });
+      }
+    }
   };
 
-  const pageNumSelectOpt = [
-    {
-      id:shortid.generate(),
-      value:5,
-      text:5
-    },
-    {
-      id:shortid.generate(),
-      value:10,
-      text:10
-    },
-    {
-      id:shortid.generate(),
-      value:20,
-      text:20
-    },
-  ]
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    console.log(categoryState);
+    dispatch(addCategoryIntoDB(categoryState))
+  };
 
   const handlePageNum = (e) => {
-    setParPage(e.target.value)
+    setParPage(e.target.value);
+  };
+
+
+  const handleSearch = (e) => {
+    setSearchValue(e.target.value)
   }
+
+  // The below use effect will be handle success and error message toaster
+  useEffect(()=>{
+    if(errorMessage){
+      toast.error(errorMessage)
+    }
+    if(successMessage){
+      toast.success(successMessage)
+      setCategoryState({
+        categoryName:'',
+        image:{}
+      })
+      setImageShow('')
+    }
+
+    return () => {
+      dispatch(resetCategoryMessages())
+    }
+  },[errorMessage, successMessage])
+
+
+  // The below useEffect will be handle the category search and pagination
+  useEffect(() => {
+    const payload = {
+      page:currentPage,
+      parPage,
+      searchValue
+    }
+
+    dispatch(getCategoryFromDB(payload))
+
+   },[parPage, currentPage, searchValue])
+
   return (
     <div className="px-2 lg:px-7 pt-45">
+
+    // category page heading section
       <div className="flex lg:hidden justify-between items-center mb-5 p-4 bg-[#283046] ">
         <h1 className="text-[#d0d2d6] font-semibold ">Categories</h1>
 
@@ -158,14 +238,22 @@ const Category = () => {
           customeClass={"w-[25%]"}
         />
       </div>
+
+
       <div className="flex justify-start items-start gap-2">
         <div className="w-full lg:1-7/12">
           <div className="className='w-full p-4  bg-[#283046] rounded-md">
-            
+
+            {/* category page table heading  */}
             <div className="flex justify-between items-center">
-              <Select options={pageNumSelectOpt} name={"parPage"} value={parPage} onChange={handlePageNum} />
+              <Select
+                options={pageNumSelectOpt}
+                name={"parPage"}
+                value={parPage}
+                onChange={handlePageNum}
+              />
               <div className="w-3/12">
-                <InputGroup type={"text"} placeholder={"search..."} />
+                <InputGroup type={"text"} placeholder={"search..."} onChange={handleSearch}  />
               </div>
             </div>
 
@@ -202,22 +290,26 @@ const Category = () => {
                   <GrClose className="bg-indigo-500" stroke="#d0d2d6" />
                 </div>
               </div>
-              <form>
+              <form onSubmit={handleOnSubmit}>
                 <div className="flex flex-col w-full gap-1 mb-3">
                   <InputGroup
                     lable="Category Name"
                     type="text"
-                    htmlFor={"category_name"}
+                    htmlFor={"categoryName"}
                     placeholder="category name"
+                    onChange={handleOnChange}
+                    value={categoryState.categoryName}
                   />
                 </div>
                 <div>
                   <label
-                    className="flex justify-center items-center flex-col h-[238px] cursor-pointer border border-dashed hover:border-indigo-500 w-full border-[#d0d2d6]"
+                    className={`flex justify-center items-center flex-col h-[238px] cursor-pointer border border-dashed hover:border-indigo-500 w-full border-[#d0d2d6] ${
+                      imageShow && "p-2"
+                    } `}
                     htmlFor="image"
                   >
                     {imageShow ? (
-                      <img className="w-full h-full" src={imageShow} />
+                      <img className="w-full h-full" src={imageShow} alt={""} />
                     ) : (
                       <>
                         <span>
@@ -227,19 +319,21 @@ const Category = () => {
                       </>
                     )}
                   </label>
+                  <input
+                    type="file"
+                    name="image"
+                    id="image"
+                    hidden
+                    onChange={handleOnChange}
+                  />
                 </div>
-                <InputGroup type="file" htmlFor={"image"} hidden={true} />
                 <div className="mt-4">
                   <Button
-                    type="submit"
-                    btnTxt="Add Category"
-                    isLoading={loader}
-                    IconLoading={
-                      <PropagateLoader
-                        color="#fff"
-                        cssOverride={overrideStyle}
-                      />
-                    }
+                    btnTxt={"Add Category"}
+                    type={"submit"}
+                    btnHandler={handleOnSubmit}
+                    isLoading={loading}
+                    IconLoading={<BeatLoader color="#ffffff" size="1.2rem" />}
                   />
                 </div>
               </form>

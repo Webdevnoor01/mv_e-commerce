@@ -14,7 +14,7 @@ import Card from "../../../components/card";
 import DashboardChart from "../../../components/chart";
 import RecentChatItem from "../../../components/rectnt-chat-item";
 import Table from "../../../components/table";
-const AdminDashboard = () => {
+const SellerDashboard = () => {
   const tableOption = {
     thead: ["Order Id", "Price", "Order Status", "payment Status", "Action"],
     tbody: {
@@ -136,4 +136,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default SellerDashboard;
