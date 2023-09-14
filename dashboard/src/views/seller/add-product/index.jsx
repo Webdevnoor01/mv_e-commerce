@@ -1,62 +1,111 @@
-import { useState } from 'react';
+import { useEffect, useState } from "react";
+
+// react-redux
+import { useSelector, useDispatch } from "react-redux";
+
+// ṛeact-hook-form
+import { useForm, Controller } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+// actions
+import { getCategoryFromDB } from "../../../store/Reducers/categorySlice";
+import {
+  addProductIntoDB,
+  resetProductMessages,
+} from "../../../store/Reducers/productSlice";
 
 // custome & reusable components
-import Button from '../../../components/ui/button';
-import InputGroup from '../../../components/shared/Input-group';
-import TextArea from '../../../components/shared/text-area';
-import SearchableSelect from '../../../components/shared/Input-group/searchable-select';
-import ImgSelectBox from '../../../components/shared/img-select-box';
+import Button from "../../../components/ui/button";
+import InputGroup from "../../../components/shared/Input-group";
+import TextArea from "../../../components/shared/text-area";
+import SearchableSelect from "../../../components/shared/Input-group/searchable-select";
+import ImgSelectBox from "../../../components/shared/img-select-box";
 
 // react icons
-import { IoMdCloseCircleOutline } from 'react-icons/io';
+import { IoMdCloseCircleOutline } from "react-icons/io";
 
-const categories = [
-  {
-    id: 1,
-    name: 'Watch',
-  },
-  {
-    id: 2,
-    name: 'Pant',
-  },
-  {
-    id: 3,
-    name: 'Shoose',
-  },
-  {
-    id: 4,
-    name: 'T-shirt',
-  },
-  {
-    id: 5,
-    name: 'Shirt',
-  },
-  {
-    id: 6,
-    name: 'Laptop',
-  },
-  {
-    id: 7,
-    name: 'Mobile',
-  },
-];
+// Third-party libraries
+import { toast } from"react-hot-toast";
+import { BeatLoader } from"react-spinners";
 
 const AddProduct = () => {
-  const [allCategory, setAllCategory] = useState(categories);
+  const { categories } = useSelector((state) => state.category);
+  const { errorMessage, successMessage, loading } = useSelector(
+    (state) => state.product
+  );
+  const dispatch = useDispatch();
+
+  const [allCategory, setAllCategory] = useState([]);
   const [showCategory, setShowCategory] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [searchValue, setSearchValue] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [images, setImages] = useState([]);
   const [imageShow, setImageShow] = useState([]);
 
-  const handleShowOptions = () => {
-    setShowCategory((prev) => !prev);
-    setAllCategory(categories);
-  };
+  console.log(images);
 
+  // form validation
+  const formValidationSchema = yup.object().shape({
+    name: yup.string().required("name name is required"),
+    brand: yup.string().required("brand name is required"),
+    category: yup.string().required("category name is required"),
+    stock: yup.string().required("stock is required"),
+    price: yup.string().required("price is required"),
+    discount: yup.string().required("discount is required"),
+    description: yup.string().required("description name is required"),
+  });
+
+  // Hnadling form functionality
+  const {
+    formState: { errors },
+    control,
+    handleSubmit,
+    setValue,
+    clearErrors,
+    reset
+  } = useForm({
+    defaultValues: {
+      name: '',
+      brand: '',
+      category: '',
+      stock: '',
+      price: '',
+      discount: '',
+      description: '',
+    },
+    resolver: yupResolver(formValidationSchema),
+    reValidateMode: "onChange",
+  });
+
+  // Getting all categegory from DataBase
+  useEffect(() => {
+    dispatch(
+      getCategoryFromDB({
+        parPage: 0,
+        page: 0,
+        searchValue: "",
+      })
+    );
+  }, []);
+
+  // setting all categories
+  useEffect(() => {
+    const allCategories = categories.reduce((acc, category) => {
+      acc.push({
+        id: category._id,
+        name: category.name,
+      });
+      return acc;
+    }, []);
+
+    setAllCategory(allCategories);
+  }, [categories]);
+
+  // This below function will help you to upload(choose from device) the image
   const handleImageUpload = (e) => {
-    console.log(e.target.files);
     const files = e.target.files;
+    setImages([...images, e.target.files[0]]);
     if (files.length > 0) {
       setImageShow([...images, ...files]);
       let imageUrls = [];
@@ -71,15 +120,13 @@ const AddProduct = () => {
     }
   };
 
+  // This below function will help you to change the uploded image in the same position, I mean replace the image
   const changeUplodedImage = (img, index) => {
     let tempUrl;
     let tempImages;
     if (img) {
       tempUrl = imageShow;
       tempImages = images;
-
-      console.log('tempUrl: ', tempUrl);
-      console.log('tempImages: ', tempImages);
 
       tempImages[index] = img;
       tempUrl[index] = {
@@ -92,12 +139,10 @@ const AddProduct = () => {
 
       tempUrl = null;
       tempImages = null;
-
-      console.log('tempUrl: ', tempUrl);
-      console.log('tempImages: ', tempImages);
     }
   };
 
+  // This below function will help you to remove the uploaded image from the ui not from the database
   const removeUploadImage = (index) => {
     let tempImageUrl = imageShow;
     tempImageUrl.splice(index, 1);
@@ -110,8 +155,13 @@ const AddProduct = () => {
     tempImages = null;
   };
 
-  console.log('urls: ', imageShow);
+  const handleShowOptions = () => {
+    setShowCategory((prev) => !prev);
+  };
+
+  // the below function will be handle the search functionality of category in the form
   const handleSearchOption = (e) => {
+    console.log();
     let value = e.target.value;
     setSearchValue(value);
     if (value) {
@@ -125,6 +175,56 @@ const AddProduct = () => {
     }
   };
 
+  const handleSelectedCategory = (category) => {
+    setSelectedCategory(category);
+    setValue("category", category);
+    if (category) {
+      clearErrors("category");
+    }
+  };
+
+  const onValid = (data) => {
+    const formData = new FormData();
+    Object.keys(data).map((key) => {
+      formData.append(key, data[key]);
+    });
+
+    for (let i = 0; i < images.length; i++) {
+      formData.append("images", images[i]);
+    }
+
+    formData.append("shopName", "Khariddar")
+    dispatch(addProductIntoDB(formData));
+  };
+
+  const onInValid = (errors) => {
+    console.log(errors);
+  };
+
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+    }
+
+    if (successMessage) {
+      toast.success(successMessage);
+      setImages([]);
+      setImageShow([]);
+      reset({
+        name:'',
+        brand:'',
+        category:'',
+        price:'',
+        stock:'',
+        discount:'',
+        description:'',
+      })
+    }
+
+    return () => {
+      dispatch(resetProductMessages());
+    };
+  }, [errorMessage, successMessage]);
   return (
     <div className="px-2 lg:px-7 py-4">
       <div className="w-full p-4 bg-[#283046] rounded-md">
@@ -133,38 +233,59 @@ const AddProduct = () => {
           <h1 className="text-[#d0d2d6] text-xl font-semibold ">Add Product</h1>
           <div className="w-[6rem]">
             <Button
-              to={'/seller/dashboard/products'}
+              to={"/seller/dashboard/products"}
               btnTxt="Products"
-              customeClass={'rounded-sm'}
+              customeClass={"rounded-sm"}
             />
           </div>
         </div>
 
         <div>
-          <form>
+          {/* Froduct add form */}
+          <form onSubmit={handleSubmit(onValid, onInValid)}>
             <div className="flex flex-col mb-3 md:flex-row gap-4 w-full flex-wrap justify-start items-center ">
               <div className="lg:w-[48%] sm:w-full ">
-                <InputGroup
-                  lable={'Product Name'}
-                  htmlFor={'productName'}
-                  type={'text'}
-                  placeholder={'enter product name'}
+                <Controller
+                  control={control}
+                  name="name"
+                  render={({ field: { value, name, onChange, onBlur } }) => (
+                    <InputGroup
+                      lable={"Product Name"}
+                      htmlFor={name}
+                      type={"text"}
+                      placeholder={"enter product name"}
+                      value={value}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      error={errors.name?.message}
+                    />
+                  )}
                 />
               </div>
               <div className="lg:w-[48%] sm:w-full ">
-                <InputGroup
-                  lable={'Brand'}
-                  htmlFor={'brand'}
-                  type={'text'}
-                  placeholder={'enter brand name'}
+                <Controller
+                  control={control}
+                  name="brand"
+                  render={({ field: { value, name, onChange, onBlur } }) => (
+                    <InputGroup
+                      lable={"Brand"}
+                      htmlFor={name}
+                      type={"text"}
+                      placeholder={"enter brand name"}
+                      value={value}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      error={errors.brand?.message}
+                    />
+                  )}
                 />
               </div>
 
               <div className="lg:w-[48%] sm:w-full">
                 <SearchableSelect
-                  lable={'Category'}
-                  htmlFor={'category'}
-                  placeholder={'--select category--'}
+                  lable={"Category"}
+                  htmlFor={"category"}
+                  placeholder={"--select category--"}
                   options={allCategory}
                   value={selectedCategory && selectedCategory}
                   searchValue={searchValue}
@@ -173,42 +294,83 @@ const AddProduct = () => {
                   selectedOption={selectedCategory}
                   handleShowSearch={handleShowOptions}
                   handleSearchOption={handleSearchOption}
-                  handleSelectOption={setSelectedCategory}
+                  handleSelectOption={handleSelectedCategory}
+                  error={errors.category?.message}
                 />
               </div>
 
               <div className="lg:w-[48%] sm:w-full">
-                <InputGroup
-                  lable={'Stock'}
-                  htmlFor={'stock'}
-                  type={'text'}
-                  placeholder={'enter stock number'}
+                <Controller
+                  name="stock"
+                  control={control}
+                  render={({ field: { value, onChange, onBlur, name } }) => (
+                    <InputGroup
+                      lable={"Stock"}
+                      htmlFor={name}
+                      type={"text"}
+                      placeholder={"enter stock number"}
+                      value={value}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      error={errors.stock?.message}
+                    />
+                  )}
                 />
               </div>
 
               <div className="lg:w-[48%] sm:w-full">
-                <InputGroup
-                  lable={'Price'}
-                  htmlFor={'price'}
-                  type={'number'}
-                  placeholder={'enter product price'}
+                <Controller
+                  name="price"
+                  control={control}
+                  render={({ field: { value, name, onChange, onBlur } }) => (
+                    <InputGroup
+                      lable={"Price"}
+                      htmlFor={name}
+                      type={"text"}
+                      placeholder={"enter product price"}
+                      value={value}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      error={errors.price?.message}
+                    />
+                  )}
                 />
               </div>
 
               <div className="lg:w-[48%] sm:w-full">
-                <InputGroup
-                  lable={'Discount'}
-                  htmlFor={'discount'}
-                  type={'number'}
-                  placeholder={'enter discount number in %'}
+                <Controller
+                  name="discount"
+                  control={control}
+                  render={({ field: { value, name, onChange, onBlur } }) => (
+                    <InputGroup
+                      lable={"Discount"}
+                      htmlFor={name}
+                      type={"text"}
+                      placeholder={"enter discount number in %"}
+                      value={value}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      error={errors.discount?.message}
+                    />
+                  )}
                 />
               </div>
               <div className="w-[98%]">
-                <TextArea
-                  lable={'Description'}
-                  name={'description'}
-                  placeholder={'enter product description'}
-                  height={'h-[100px]'}
+                <Controller
+                  name="description"
+                  control={control}
+                  render={({ field: { value, name, onChange, onBlur } }) => (
+                    <TextArea
+                      lable={"Description"}
+                      name={name}
+                      placeholder={"enter product description"}
+                      height={"h-[100px]"}
+                      value={value}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      error={errors.description?.message}
+                    />
+                  )}
                 />
               </div>
               <div className="w-[96%] grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 text-[#d0d2d6] mb-4">
@@ -233,18 +395,26 @@ const AddProduct = () => {
                       className="p-2 bg-slate-700 z-10 hover:shadow-lg hover:shadow-slate-400/50 cursor-pointer absolute top-1 right-1 rounded-full "
                       onClick={() => removeUploadImage(i)}
                     >
-                      {' '}
-                      <IoMdCloseCircleOutline />{' '}
+                      {" "}
+                      <IoMdCloseCircleOutline />{" "}
                     </span>
                   </div>
                 ))}
 
                 <div className="w-[300px] h-[210px]">
-                  <ImgSelectBox htmlFor={'image'} onChange={handleImageUpload} />
+                  <ImgSelectBox
+                    htmlFor={"image"}
+                    onChange={handleImageUpload}
+                  />
                 </div>
               </div>
 
-              <Button btnTxt={'Add Product'} type="submit" />
+              <Button
+                btnTxt={"Add Product"}
+                type="submit"
+                isLoading={loading}
+                IconLoading={<BeatLoader color="#ffffff" size={"1.25rem"} />}
+              />
             </div>
           </form>
         </div>

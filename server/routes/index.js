@@ -3,7 +3,8 @@ const router = require("express").Router()
 // imported routes
 const adminAuthRoute = require("./adminRoutes")
 const authRoute = require("./authRoutes")
-const adminRoute = require("./dashboard/admin/category")
+const adminRoute = require("./dashboard/categoryRoute")
+const sellerRoutes = require("./dashboard/seller/sellerRoutes")
 
 // route for authentication
 router.use("/api/auth",authRoute )
@@ -13,5 +14,9 @@ router.use("/api/auth/admin", adminAuthRoute)
 
 // admin routes
 router.use("/api/admin",adminRoute )
+
+
+// seller routes
+router.use("/api/seller", sellerRoutes)
 
 module.exports = router

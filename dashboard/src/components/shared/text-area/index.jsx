@@ -10,7 +10,8 @@ const TextArea = ({
   value,
   textAreaRef,
   isActive,
-  height
+  height,
+  error
 }) => {
   return (
     <div className="flex flex-col w-full gap-1 mb-3">
@@ -25,6 +26,7 @@ const TextArea = ({
         onClick={onClick}
         onBlur={onBlur}
       ></textarea>
+      {error && <p className="text-xs text-[#CA0F0F] font-semibold ">{error}</p>}
     </div>
   );
 };

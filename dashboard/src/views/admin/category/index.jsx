@@ -24,10 +24,14 @@ import { BeatLoader } from "react-spinners";
 import { overrideStyle } from "../../../utils/overrideStyle";
 
 // actions
-import { addCategoryIntoDB, getCategoryFromDB, resetCategoryMessages } from "../../../store/Reducers/categorySlice";
+import {
+  addCategoryIntoDB,
+  getCategoryFromDB,
+  resetCategoryMessages,
+} from "../../../store/Reducers/categorySlice";
 
 // thirt-party utility libraries
-import { toast } from "react-hot-toast"
+import { toast } from "react-hot-toast";
 
 const tableOption = {
   thead: ["No", "Image", "Name", "Actions"],
@@ -44,78 +48,6 @@ const tableOption = {
         </div>,
         ,
         <span> sports </span>,
-        <span className="flex justify-start items-center gap-1">
-          <Action Icon={FaEdit} bg={"bg-yellow-500"} />
-          <Action Icon={FaTrash} bg={"bg-red-500"} />
-        </span>,
-      ],
-    },
-    data2: {
-      td: [
-        2,
-        <div className="w-[2.8125rem] h-[2.8125rem]">
-          <img
-            className="h-[100%] "
-            src="../../../images/category/2.png"
-            alt=""
-          />
-        </div>,
-        ,
-        <span> Accessories </span>,
-        <span className="flex justify-start items-center gap-1">
-          <Action Icon={FaEdit} bg={"bg-yellow-500"} />
-          <Action Icon={FaTrash} bg={"bg-red-500"} />
-        </span>,
-      ],
-    },
-    data3: {
-      td: [
-        3,
-        <div className="w-[2.8125rem] h-[2.8125rem]">
-          <img
-            className="h-[100%] "
-            src="../../../images/category/4.png"
-            alt=""
-          />
-        </div>,
-        ,
-        <span> Headphones </span>,
-        <span className="flex justify-start items-center gap-1">
-          <Action Icon={FaEdit} bg={"bg-yellow-500"} />
-          <Action Icon={FaTrash} bg={"bg-red-500"} />
-        </span>,
-      ],
-    },
-    data4: {
-      td: [
-        3,
-        <div className="w-[2.8125rem] h-[2.8125rem]">
-          <img
-            className="h-[100%] "
-            src="../../../images/category/5.png"
-            alt=""
-          />
-        </div>,
-        ,
-        <span> Laptop </span>,
-        <span className="flex justify-start items-center gap-1">
-          <Action Icon={FaEdit} bg={"bg-yellow-500"} />
-          <Action Icon={FaTrash} bg={"bg-red-500"} />
-        </span>,
-      ],
-    },
-    data5: {
-      td: [
-        3,
-        <div className="w-[2.8125rem] h-[2.8125rem]">
-          <img
-            className="h-[100%] "
-            src="../../../images/category/5.png"
-            alt=""
-          />
-        </div>,
-        ,
-        <span> Laptop </span>,
         <span className="flex justify-start items-center gap-1">
           <Action Icon={FaEdit} bg={"bg-yellow-500"} />
           <Action Icon={FaTrash} bg={"bg-red-500"} />
@@ -143,14 +75,17 @@ const pageNumSelectOpt = [
   },
 ];
 const Category = () => {
-  const { loading, errorMessage, successMessage } = useSelector((state) => state.category);
-  const dispatch = useDispatch()
+  const { loading, errorMessage, successMessage, categories, totalCategory } =
+    useSelector((state) => state.category);
+  const dispatch = useDispatch();
+
+  const [tbody, setTbody] = useState({});
 
   const [currentPage, setCurrentPage] = useState(1);
   const [parPage, setParPage] = useState(10);
-  const [searchValue, setSearchValue] = useState('')
+  const [searchValue, setSearchValue] = useState("");
   const [show, setShow] = useState(false);
-  const [imageShow, setImageShow] = useState('');
+  const [imageShow, setImageShow] = useState("");
 
   const [categoryState, setCategoryState] = useState({
     categoryName: "",
@@ -180,54 +115,80 @@ const Category = () => {
   const handleOnSubmit = (e) => {
     e.preventDefault();
     console.log(categoryState);
-    dispatch(addCategoryIntoDB(categoryState))
+    dispatch(addCategoryIntoDB(categoryState));
   };
 
   const handlePageNum = (e) => {
     setParPage(e.target.value);
   };
 
-
   const handleSearch = (e) => {
-    setSearchValue(e.target.value)
-  }
+    setSearchValue(e.target.value);
+  };
+
 
   // The below use effect will be handle success and error message toaster
-  useEffect(()=>{
-    if(errorMessage){
-      toast.error(errorMessage)
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
     }
-    if(successMessage){
-      toast.success(successMessage)
+    if (successMessage) {
+      toast.success(successMessage);
       setCategoryState({
-        categoryName:'',
-        image:{}
-      })
-      setImageShow('')
+        categoryName: "",
+        image: {},
+      });
+      setImageShow("");
     }
 
     return () => {
-      dispatch(resetCategoryMessages())
-    }
-  },[errorMessage, successMessage])
-
+      dispatch(resetCategoryMessages());
+    };
+  }, [errorMessage, successMessage]);
 
   // The below useEffect will be handle the category search and pagination
   useEffect(() => {
     const payload = {
-      page:currentPage,
+      page: currentPage,
       parPage,
-      searchValue
-    }
+      searchValue,
+    };
 
-    dispatch(getCategoryFromDB(payload))
+    dispatch(getCategoryFromDB(payload));
+  }, [parPage, currentPage, searchValue]);
 
-   },[parPage, currentPage, searchValue])
+
+  // The below useEffect will convert the categories into table row and also add extra element which are need to render into the category table like edit button, delete button etc. 
+  useEffect(() => {
+    const tableBodyData = categories.reduce((acc, category, i) =>{
+
+      let td = [
+        i + 1,
+        <div className="w-[2.8125rem] h-[2.8125rem]">
+          <img
+            className="w-[2.8125rem] h-[100%] "
+            src={category.image}
+            alt={category.name}
+          />
+        </div>,
+        <span> sports </span>,
+        <span className="flex justify-start items-center gap-1">
+          <Action Icon={FaEdit} bg={"bg-yellow-500"} />
+          <Action Icon={FaTrash} bg={"bg-red-500"} />
+        </span>,
+      ]
+      acc[`data${i+1}`] =  {
+        td:td
+      }
+      return acc
+    }, {})
+
+    setTbody({...tableBodyData})
+  }, [categories]);
 
   return (
     <div className="px-2 lg:px-7 pt-45">
-
-    // category page heading section
+      {/* category page heading section */}
       <div className="flex lg:hidden justify-between items-center mb-5 p-4 bg-[#283046] ">
         <h1 className="text-[#d0d2d6] font-semibold ">Categories</h1>
 
@@ -238,12 +199,9 @@ const Category = () => {
           customeClass={"w-[25%]"}
         />
       </div>
-
-
       <div className="flex justify-start items-start gap-2">
         <div className="w-full lg:1-7/12">
           <div className="className='w-full p-4  bg-[#283046] rounded-md">
-
             {/* category page table heading  */}
             <div className="flex justify-between items-center">
               <Select
@@ -253,18 +211,22 @@ const Category = () => {
                 onChange={handlePageNum}
               />
               <div className="w-3/12">
-                <InputGroup type={"text"} placeholder={"search..."} onChange={handleSearch}  />
+                <InputGroup
+                  type={"text"}
+                  placeholder={"search..."}
+                  onChange={handleSearch}
+                />
               </div>
             </div>
 
             <div className="w-full text-sm text-left text-[#d0d2d6]">
-              <Table thead={tableOption.thead} tbodys={tableOption.tbody} />
+              <Table thead={tableOption.thead} tbodys={tbody} />
             </div>
             <div className="w-full flex justify-end items-center mt-4 bottom-4 right-4">
               <Pagination
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
-                pageNumber={50}
+                pageNumber={totalCategory}
                 parPage={parPage}
                 showItems={5}
               />
@@ -290,6 +252,8 @@ const Category = () => {
                   <GrClose className="bg-indigo-500" stroke="#d0d2d6" />
                 </div>
               </div>
+
+              {/* Form for adding category */}
               <form onSubmit={handleOnSubmit}>
                 <div className="flex flex-col w-full gap-1 mb-3">
                   <InputGroup

@@ -1,10 +1,10 @@
 const router = require("express").Router()
 
 // Middleware
-const authMiddleware = require("../../../middlewares/authMiddleware")
+const authMiddleware = require("../../middlewares/authMiddleware")
 
 // controller
-const categoryController = require("../../../controllers/dashboard/admin/categoryController")
+const categoryController = require("../../controllers/dashboard/categoryController")
 
 // routes
 

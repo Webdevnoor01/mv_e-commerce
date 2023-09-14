@@ -54,7 +54,8 @@ const categorySlice = createSlice({
     successMessage: "",
     errorMessage: "",
     loading: false,
-   categories:[]
+   categories:[],
+   totalCategory:0
   },
   reducers: {
     resetCategoryMessages: (state) => {
@@ -69,7 +70,7 @@ const categorySlice = createSlice({
     [addCategoryIntoDB.fulfilled]: (state, action) => {
 
       state.successMessage = action.payload.message;
-      state.categories = [...state.categories, action.payload.category]
+      state.categories = [...state.categories, action.payload.category];
       state.loading = false;
     },
     [addCategoryIntoDB.rejected]: (state, action) => {
@@ -80,7 +81,9 @@ const categorySlice = createSlice({
 
     // get category
     [getCategoryFromDB.fulfilled]:(state, action) => {
-      console.log(action.payload)
+      state.totalCategory = action.payload.totalCategory;
+      state.categories = action.payload.categories
+
     }
   },
 });

@@ -14,11 +14,14 @@ const ProtectedRoute = ({ route, children }) => {
         if (role === route.role) {
           if (route.status) {
             if (userInfo.status === route.status) {
+              console.log(userInfo.status, route.status)
               return <Suspense fallback={null}>{children}</Suspense>;
             } else {
               if (userInfo.status === "pending") {
                 return <Navigate to={"/seller/account-pending"} replace />;
-              } else {
+              } 
+              
+              if(userInfo.status === "deactive"){
                 return <Navigate to={"/seller/account-deactive"} replace />;
               }
             }

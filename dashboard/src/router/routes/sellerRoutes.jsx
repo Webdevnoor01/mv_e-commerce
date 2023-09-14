@@ -123,6 +123,7 @@ export const sellerRoutes = [
         element:<Suspense fallback="Loading..." >
             <Profile />
         </Suspense>,
+        role:"seller",
         visibility:['active', 'deactive', 'pending']
     },
     

@@ -21,6 +21,7 @@ const SearchableSelect = ({
   handleShowSearch,
   handleSearchOption,
   handleSelectOption,
+  error
 }) => {
   return (
     <div className="flex flex-col w-full gap-1 mb-3 relative ">
@@ -42,7 +43,7 @@ const SearchableSelect = ({
         onBlur={onBlur}
         readOnly
       />
-
+      {error && <p className="text-xs text-[#CA0F0F] font-semibold ">{error}</p>}
       <div
         className={`absolute top-[101%] bg-slate-800 w-full transition-all ${
           showSearch ? "scale-100" : "scale-0"

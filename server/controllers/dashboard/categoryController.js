@@ -2,13 +2,13 @@
 const formidable = require("formidable")
 
 // models
-const Category  = require("../../../models/admin/categoryModel")
+const Category  = require("../../models/admin/categoryModel")
 
 // services
-const imageUploader = require("../../../services/image-upload")
+const imageUploader = require("../../services/image-upload")
 
 // utils
-const returnResponse = require("../../../utils/response")
+const returnResponse = require("../../utils/response")
 
 class CategoryController {
 
@@ -25,7 +25,7 @@ class CategoryController {
                 let slug = categoryName.split(" ").join("-")
 
                 // uploading the image
-                const imageUrl = await imageUploader.upload(files.image)
+                const imageUrl = await imageUploader.upload(files.image, "categories")
 
                 const category = await Category.create({
                     name:categoryName,
@@ -63,19 +63,19 @@ class CategoryController {
             }
 
             if(searchValue && parPage && page){
+
                 const categories = await Category.find({
                     $text:{$search:searchValue}
                 }).skip(skip).limit(intPage).sort({createdAt:-1})
-
+                
                 const totalCategory = await Category.find({$text:{$search:searchValue}}).countDocuments()
-                console.log(totalCategory, categories)
                 return returnResponse(res, 200, {
                     totalCategory, categories
                 })
+
             }else if(searchValue === "" && parPage && page){
                 const categories = await Category.find().skip(skip).limit(intParPage).sort({createdAt: -1})
                 const totalCategory = await Category.find().countDocuments()
-                console.log(totalCategory, categories)
                 return returnResponse(res, 200, {
                     totalCategory,
                     categories
@@ -83,9 +83,6 @@ class CategoryController {
             }else {
                 const categories = await Category.find()
                 const totalCategory = await Category.find().countDocuments()
-
-                console.log(totalCategory, categories)
-
                 return returnResponse(res, 200, {
                     totalCategory, categories
                 })
