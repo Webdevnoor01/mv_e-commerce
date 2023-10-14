@@ -1,6 +1,6 @@
-import React from "react";
-import { FaList } from "react-icons/fa";
-import { useSelector } from "react-redux";
+/* eslint-disable react/prop-types */
+import { FaList } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 const Header = ({ showSidebar, setShowSidebar }) => {
   const { userInfo } = useSelector(state => state.auth)
   return (
@@ -26,14 +26,14 @@ const Header = ({ showSidebar, setShowSidebar }) => {
           <div className="flex items-center justify-center">
             <div className="flex items-center justify-center gap-3">
               <div className="flex items-center justify-center flex-col text-end ">
-                <h2 className="text-sm font-bold  ">{userInfo?.name?.split(" ").slice(0, 2).join(" ")}</h2>
+                <h2 className="text-sm font-bold  ">{userInfo?.name?.split(' ').slice(0, 2).join(' ')}</h2>
                 <span className="text-[0.875rem] font-normal w-full " title={userInfo.name}>
                   {userInfo.role}
                 </span>
               </div>
               <img
                 className="w-[2.8125rem] h-[2.8125rem] rounded-full over"
-                src="../../images/admin.jpg"
+                src="http://localhost:3000/images/admin.jpg"
                 alt="user logo"
               />
             </div>

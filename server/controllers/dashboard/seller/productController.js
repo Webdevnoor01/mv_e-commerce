@@ -20,13 +20,15 @@ class ProductController {
         if(images.length > 1 ){
 
           for (let i = 0; i < images.length; i++) {
-            const image = imageUploaderService.upload(images[i],"products");
+            const image = await imageUploaderService.upload(images[i],"products");
             allImageUrl.push(image)
           }
         }else{
           const image = await imageUploaderService.upload(images,"products");
           allImageUrl.push(image)
         }
+
+        console.log(allImageUrl)
         // Preapering the payload to create product
         let productPayload = {
           sellerId: req.user.id,
@@ -96,6 +98,101 @@ class ProductController {
         })
       }
     } catch (error) {
+      return returnResponse(res, 500, {
+        message:error.message
+      })
+    }
+  }
+
+  async getProductById(req, res) {
+    const {productId } = req.params
+    try {
+      const product = await Product.findById(productId)
+
+      if(!product){
+        return returnResponse(res, 404, {
+          message:"Product not found"
+        })
+      }
+
+      returnResponse(res, 200, {
+        product
+      })
+    } catch (error) {
+      
+    }
+  }
+
+  // Update product into the database
+  async updateProduct(req, res){
+    const {productId }= req.params
+    try {
+      const form = formidable()
+      form.parse(req, async(err, fields) => {
+        const product = await Product.findByIdAndUpdate(productId, fields)
+        if(!product){
+          return returnResponse(res, 404, {
+            message:"Failed to update product"
+          })
+        }
+
+        returnResponse(res, 200, {
+          message:"Product update successfully"
+        })
+      })
+    } catch (error) {
+      console.log("productController: updateProduct-Error-> ", error)
+      return returnResponse(res, 500, {
+        message:error.message
+      })
+    }
+  }
+
+
+  // Update product image into db
+  async updateProductImage(req, res){
+    const {productId }= req.params
+    try {
+      const form = formidable()
+      form.parse(req, async(err, fields, files) => {
+        const { publicId, index } = fields
+        const { newImage} = files
+
+        if(publicId){
+
+          await imageUploaderService.remove(publicId)
+        }
+        const newUploadedImage = await imageUploaderService.upload(newImage, "products")
+        
+        let  { images } =  await Product.findById(productId)
+        images[index] = newUploadedImage
+
+        const product = await Product.findByIdAndUpdate(productId, {images})
+        
+        if(!product) {
+          return returnResponse(res, 400, {
+            message:"Failed to change image"
+          })
+        }
+
+        return returnResponse(res, 201, {
+          message:publicId ? "Image changed successfully":"Image upload successfully"
+        })
+      })
+    } catch (error) {
+      console.log("productController: updateProductImage-Error-> ", error)
+      return returnResponse(res, 500, {
+        message:error.message
+      })
+    }
+  }
+
+  // Delete product from the database
+  async deleteProduct(req, res){
+    try {
+      
+    } catch (error) {
+      console.log("productController: deleteProduct-Error-> ", error)
       return returnResponse(res, 500, {
         message:error.message
       })

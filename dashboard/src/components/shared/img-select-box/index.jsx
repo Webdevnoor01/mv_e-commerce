@@ -1,5 +1,4 @@
-import React from 'react'
-
+/* eslint-disable react/prop-types */
 // react-icons
 import {BsImages } from 'react-icons/bs'
 
@@ -21,7 +20,7 @@ const ImgSelectBox = ({loader, htmlFor, onChange}) => {
         )
     }
     </label>
-    <input type="file" name={htmlFor} id={htmlFor} className='hidden' onChange={onChange} />
+    <input type="file" multiple={true} name={htmlFor} id={htmlFor} className='hidden' onChange={onChange} />
     </>
   )
 }

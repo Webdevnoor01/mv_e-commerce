@@ -26,8 +26,8 @@ import ImgSelectBox from "../../../components/shared/img-select-box";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 
 // Third-party libraries
-import { toast } from"react-hot-toast";
-import { BeatLoader } from"react-spinners";
+import { toast } from "react-hot-toast";
+import { BeatLoader } from "react-spinners";
 
 const AddProduct = () => {
   const { categories } = useSelector((state) => state.category);
@@ -42,8 +42,6 @@ const AddProduct = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [images, setImages] = useState([]);
   const [imageShow, setImageShow] = useState([]);
-
-  console.log(images);
 
   // form validation
   const formValidationSchema = yup.object().shape({
@@ -63,16 +61,16 @@ const AddProduct = () => {
     handleSubmit,
     setValue,
     clearErrors,
-    reset
+    reset,
   } = useForm({
     defaultValues: {
-      name: '',
-      brand: '',
-      category: '',
-      stock: '',
-      price: '',
-      discount: '',
-      description: '',
+      name: "",
+      brand: "",
+      category: "",
+      stock: "",
+      price: "",
+      discount: "",
+      description: "",
     },
     resolver: yupResolver(formValidationSchema),
     reValidateMode: "onChange",
@@ -87,7 +85,7 @@ const AddProduct = () => {
         searchValue: "",
       })
     );
-  }, []);
+  }, [dispatch]);
 
   // setting all categories
   useEffect(() => {
@@ -105,7 +103,8 @@ const AddProduct = () => {
   // This below function will help you to upload(choose from device) the image
   const handleImageUpload = (e) => {
     const files = e.target.files;
-    setImages([...images, e.target.files[0]]);
+    console.log(files);
+    setImages([...images, ...e.target.files]);
     if (files.length > 0) {
       setImageShow([...images, ...files]);
       let imageUrls = [];
@@ -193,7 +192,7 @@ const AddProduct = () => {
       formData.append("images", images[i]);
     }
 
-    formData.append("shopName", "Khariddar")
+    formData.append("shopName", "Khariddar");
     dispatch(addProductIntoDB(formData));
   };
 
@@ -211,20 +210,20 @@ const AddProduct = () => {
       setImages([]);
       setImageShow([]);
       reset({
-        name:'',
-        brand:'',
-        category:'',
-        price:'',
-        stock:'',
-        discount:'',
-        description:'',
-      })
+        name: "",
+        brand: "",
+        category: "",
+        price: "",
+        stock: "",
+        discount: "",
+        description: "",
+      });
     }
 
     return () => {
       dispatch(resetProductMessages());
     };
-  }, [errorMessage, successMessage]);
+  }, [errorMessage, successMessage, dispatch, reset]);
   return (
     <div className="px-2 lg:px-7 py-4">
       <div className="w-full p-4 bg-[#283046] rounded-md">
@@ -241,7 +240,7 @@ const AddProduct = () => {
         </div>
 
         <div>
-          {/* Froduct add form */}
+          {/* Product add form */}
           <form onSubmit={handleSubmit(onValid, onInValid)}>
             <div className="flex flex-col mb-3 md:flex-row gap-4 w-full flex-wrap justify-start items-center ">
               <div className="lg:w-[48%] sm:w-full ">
@@ -390,6 +389,7 @@ const AddProduct = () => {
                       name={i}
                       id={i}
                       className="hidden"
+                      multiple={true}
                     />
                     <span
                       className="p-2 bg-slate-700 z-10 hover:shadow-lg hover:shadow-slate-400/50 cursor-pointer absolute top-1 right-1 rounded-full "
