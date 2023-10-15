@@ -1,4 +1,5 @@
 const formidable = require("formidable");
+const mongoose = require("mongoose")
 
 // model
 const Product = require("../../../models/seller/productModel");
@@ -189,10 +190,22 @@ class ProductController {
 
   // Delete product from the database
   async deleteProduct(req, res){
+    const { productId} = req.params
     try {
-      
+      console.log(productId)
+      const product = await Product.deleteOne({_id:productId})
+      if(!product){
+        return returnResponse(res, 404, {
+          message:"Failed to delete product"
+        })
+      }
+
+      return returnResponse(res, 200, {
+        message:"Product deleted successfully", 
+        product
+      })
     } catch (error) {
-      console.log("productController: deleteProduct-Error-> ", error)
+      console.log("productController: deleteProduct-Error-> ", error.message)
       return returnResponse(res, 500, {
         message:error.message
       })

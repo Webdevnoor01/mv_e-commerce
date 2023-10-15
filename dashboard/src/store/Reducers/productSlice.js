@@ -112,6 +112,18 @@ export const updateProductImageIntoDB = createAsyncThunk(
   }
 );
 
+export const deleteProductFromDB = createAsyncThunk("seller/product-delete",async ({productId}, {rejectWithValue, fulfillWithValue}) => {
+  try {
+    const product = await api.delete(`/seller/product-delete/${productId}`, {
+      withCredentials:true
+    })
+
+    return fulfillWithValue(product.data)
+  } catch (error) {
+    return rejectWithValue(error.message)
+  }
+})
+
 const productSlice = createSlice({
   name: "product",
   initialState: {
@@ -119,6 +131,7 @@ const productSlice = createSlice({
     errorMessage: "",
     loading: false,
     editLoading: false,
+    deleteLoading:false,
     imageUploadLoading: false,
     products: [],
     product: {},
@@ -145,9 +158,17 @@ const productSlice = createSlice({
     },
 
     // get category
+    [getProductsFromDB.pending]:(state) => {
+      state.loading = true;
+    },
     [getProductsFromDB.fulfilled]: (state, action) => {
+      state.loading = false;
       state.totalProducts = action.payload.totalProducts;
       state.products = action.payload.products;
+    },
+    [getProductsFromDB.rejected]:(state, action) => {
+      state.loading = false;
+      state.errorMessage = action.payload?.message;
     },
 
     // get single product by product id
@@ -189,6 +210,19 @@ const productSlice = createSlice({
       state.imageUploadLoading = false;
       state.errorMessage = action.payload?.message;
     },
+
+    // delete product from the database
+    [deleteProductFromDB.pending]:(state) => {
+      state.deleteLoading = true;
+    },
+    [deleteProductFromDB.fulfilled]:(state, action) => {
+      state.deleteLoading = false;
+      state.successMessage = action.payload.message
+    },
+    [deleteProductFromDB.rejected]: (state, action) => {
+      state.deleteLoading = false;
+      state.errorMessage = action.payload.message;
+    }
   },
 });
 export const { resetProductMessages } = productSlice.actions;

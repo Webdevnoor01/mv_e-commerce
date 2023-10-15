@@ -238,7 +238,7 @@ const EditProduct = () => {
             <Button
               to={"/seller/dashboard/products"}
               btnTxt="Products"
-              customeClass={"rounded-sm"}
+              customeClass={"rounded-sm bg-blue-500 hover:shadow-blue-500/50"}
             />
           </div>
         </div>

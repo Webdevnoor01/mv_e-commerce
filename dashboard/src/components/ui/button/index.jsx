@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+/* eslint-disable react/prop-types */
+import { Link } from "react-router-dom";
 
 const Button = ({
   btnTxt,
@@ -9,6 +9,7 @@ const Button = ({
   IconLoading,
   isLoading,
   to,
+  isDisabled
 }) => {
   return (
     <>
@@ -16,12 +17,12 @@ const Button = ({
         <Link
           to={to}
           className={`${
-            customeClass
-              ? ` bg-blue-500 hover:shadow-blue-500/20 hover:shadow-lg text-white rounded-md px-7 py-2  flex justify-center items-center ${customeClass} `
-              : 'bg-blue-500 w-full hover:shadow-blue-500/20 hover:shadow-lg text-white rounded-md px-7 py-2  flex justify-center items-center'
+            customeClass.length > 0
+              ? `  hover:shadow-lg text-white rounded-md px-7 py-2  flex justify-center items-center ${customeClass} `
+              : "bg-blue-500 w-full hover:shadow-blue-500/20 hover:shadow-lg text-white rounded-md px-7 py-2  flex justify-center items-center"
           }`}
         >
-          {' '}
+          {" "}
           {btnTxt}
         </Link>
       )}
@@ -29,12 +30,13 @@ const Button = ({
         <button
           className={`${
             customeClass
-              ? `${customeClass} bg-blue-500 hover:shadow-blue-500/20 hover:shadow-lg text-white rounded-md px-7 py-2  flex justify-center items-center `
-              : 'bg-blue-500 w-full hover:shadow-blue-500/20 hover:shadow-lg text-white rounded-md px-7 py-2  flex justify-center items-center'
+              ? `hover:shadow-lg  text-white rounded-md px-7 py-2  flex justify-center items-center ${customeClass} `
+              : "bg-blue-500 w-full hover:shadow-blue-500/20 hover:shadow-lg text-white rounded-md px-7 py-2  flex justify-center items-center"
           }`}
-          type={type ? type : 'button'}
-          disabled={isLoading}
+          type={type ? type : "button"}
+          disabled={isLoading || isDisabled}
           onClick={btnHandler}
+
         >
           {isLoading ? IconLoading: btnTxt}
         </button>

@@ -223,7 +223,7 @@ const AddProduct = () => {
     return () => {
       dispatch(resetProductMessages());
     };
-  }, [errorMessage, successMessage, dispatch, reset]);
+  }, [errorMessage, successMessage]);
   return (
     <div className="px-2 lg:px-7 py-4">
       <div className="w-full p-4 bg-[#283046] rounded-md">

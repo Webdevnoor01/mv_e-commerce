@@ -20,6 +20,6 @@ router.patch("/product-update/:productId", authMiddleware.authenticate, productC
 router.patch("/product-update-img/:productId", authMiddleware.authenticate, productController.updateProductImage)
 
 // TODO: pending
-router.patch("/product-delete/:productId", authMiddleware.authenticate, productController.deleteProduct)
+router.delete("/product-delete/:productId", authMiddleware.authenticate, productController.deleteProduct)
 
 module.exports = router

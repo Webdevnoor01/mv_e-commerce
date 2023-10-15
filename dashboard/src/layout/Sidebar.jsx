@@ -17,7 +17,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
     <div>
       <div
         onClick={() => setShowSidebar(!showSidebar)}
-        className={` fixed top-0 left-0 z-10 ${
+        className={` fixed top-0 left-0 z-40 ${
           showSidebar ? "visible" : "invisible"
         } w-screen h-screen bg-[#22292f80] `}
       ></div>
