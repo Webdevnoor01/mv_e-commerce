@@ -61,6 +61,12 @@ const AdminLogin = () => {
     reValidateMode: "onChange",
   });
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken")
+    if(accessToken){
+      navigate("/admin/dashboard")
+    }
+  },[])
   const onValid = (data) => {
     console.log(data);
     dispatch(adminLogin(data));

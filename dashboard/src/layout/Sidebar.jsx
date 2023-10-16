@@ -1,15 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-
-import { getNavs } from "../navigation";
-import NavItem from "../components/ui/nav-item";
+import { useEffect, useState } from "react";
+// react-redux
 import { useSelector } from "react-redux";
+// react-router-dom
+import { Link, useLocation, useNavigate } from "react-router-dom";
+// custome & reusable components
+import NavItem from "../components/ui/nav-item";
+// react-incons
+import { BiLogOut } from "react-icons/bi";
+// third-party libraries
+import {toast } from "react-hot-toast"
+// utils 
+import { getNavs } from "../navigation";
+
 const Sidebar = ({ showSidebar, setShowSidebar }) => {
-  const { userInfo: { role} } = useSelector(state => state.auth)
+  const {
+    userInfo: { role },
+  } = useSelector((state) => state.auth);
+  const { pathname } = useLocation();
+  const navigate = useNavigate()
   const [navItems, setNavItems] = useState([]);
 
-  const { pathname } = useLocation();
+  const handleLogOut = () => {
 
+    if(pathname.includes("seller")){
+      localStorage.removeItem("accessToken")
+      navigate("/login")
+      
+    }
+    if(pathname.includes("admin")){
+      localStorage.removeItem("accessToken")
+      navigate("/admin/login")
+      
+    }
+    toast.success("successfylly logged out!")
+  }
   useEffect(() => {
     setNavItems(getNavs(role));
   }, [role]);
@@ -82,6 +106,13 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                   currentPath={pathname}
                 />
               ))}
+            <li className="cursor-pointer hover:bg-slate-600 shadow-indgo-500/30 text-white duration-500 px-[12px] py-[9px] rounded-sm flex justify-start items-center gap-[12px]  w-full mb-1" 
+            onClick={handleLogOut} >
+              <span>
+                <BiLogOut />
+              </span>
+              <span> Log out </span>
+            </li>
           </ul>
         </div>
       </div>

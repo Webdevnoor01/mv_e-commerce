@@ -1,11 +1,18 @@
-
-
 import { Link } from "react-router-dom";
 
 // utility libraries
 import shortid from "shortid";
+import Loader from "../ui/loader";
 
-const Table = ({ tableName, to, thead, tbodys, isShow, isHeading }) => {
+const Table = ({
+  tableName,
+  to,
+  thead,
+  tbodys,
+  isShow,
+  isHeading,
+  loading,
+}) => {
   return (
     <section
       className={`w-full p-4 rounded-md bg-[#283046] ${
@@ -23,67 +30,72 @@ const Table = ({ tableName, to, thead, tbodys, isShow, isHeading }) => {
         </div>
       )}
 
-      <div className="relative overflow-x-auto">
-        <table className="w-full text-sm text-left text-[#d0d2d6]">
-          {thead && (
-            <thead className={`text-sm text-[#d2d0d6] uppercase border-b border-slate-700`}>
-              <tr>
-                {thead.map((thData) => (
-                  <th
-                    key={shortid.generate()}
-                    scope="col"
-                    className="py-3 px-4"
-                  >
-                    {thData}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-          )}
+      <div className="overflow-x-auto">
+        {loading && <Loader size={20} hight={"h-full"} />}
+        {!loading && (
+          <table className="w-full text-sm text-left text-[#d0d2d6]">
+            {thead && (
+              <thead
+                className={`text-sm text-[#d2d0d6] uppercase border-b border-slate-700`}
+              >
+                <tr>
+                  {thead.map((thData) => (
+                    <th
+                      key={shortid.generate()}
+                      scope="col"
+                      className="py-3 px-4"
+                    >
+                      {thData}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+            )}
 
-          {tbodys && (
-            <tbody
-              key={shortid.generate()}
-              className=" transition-all ease-linear "
-            >
-              {Object.values(tbodys).map((tbody) => (
-                <>
-                  <tr key={shortid.generate()}>
-                    {tbody.td.map((tdData) => (
-                      <td
-                        key={shortid.generate()}
-                        scope="col"
-                        className="py-2 px-2 font-medium whitespace-nowrap"
-                      >
-                        {tdData}
-                      </td>
-                    ))}
-                  </tr>
-                  {tbody.children &&
-                    isShow &&
-                    Object.values(tbody.children).map((td) => (
-                      <tr
-                        key={shortid.generate()}
-                        className="border-b border-slate-700 bg-slate-800"
-                      >
-                        {td.map((tdData, i) => (
-                          <td
-                            key={shortid.generate()}
-                            scope="col"
-                            className={`py-3 px-4 font-medium whitespace-nowrap ${
-                              i === 0 ? "pl-6" : ""
-                            } `}
-                          >
-                            {tdData}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                </>
-              ))}
-            </tbody>
-          )}
-        </table>
+            {tbodys && (
+              <tbody
+                key={shortid.generate()}
+                className=" transition-all ease-linear "
+              >
+                {Object.values(tbodys).map((tbody) => (
+                  <>
+                    <tr key={shortid.generate()}>
+                      {tbody.td.map((tdData) => (
+                        <td
+                          key={shortid.generate()}
+                          scope="col"
+                          className="py-2 px-2 font-medium whitespace-nowrap"
+                        >
+                          {tdData}
+                        </td>
+                      ))}
+                    </tr>
+                    {tbody.children &&
+                      isShow &&
+                      Object.values(tbody.children).map((td) => (
+                        <tr
+                          key={shortid.generate()}
+                          className="border-b border-slate-700 bg-slate-800"
+                        >
+                          {td.map((tdData, i) => (
+                            <td
+                              key={shortid.generate()}
+                              scope="col"
+                              className={`py-3 px-4 font-medium whitespace-nowrap ${
+                                i === 0 ? "pl-6" : ""
+                              } `}
+                            >
+                              {tdData}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                  </>
+                ))}
+              </tbody>
+            )}
+          </table>
+        )}
       </div>
     </section>
   );

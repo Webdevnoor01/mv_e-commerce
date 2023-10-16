@@ -71,11 +71,11 @@ export const getUserInfo = createAsyncThunk(
   }
 );
 
-const returnRole =  (token) => {
+const returnRole = (token) => {
   if (token) {
-    let decodeToken =  jwt(token);
+    let decodeToken = jwt(token);
     console.log(decodeToken);
-    const expireTime = new Date(decodeToken.exp * 1000).getTime()
+    const expireTime = new Date(decodeToken.exp * 1000).getTime();
     if (new Date().getTime() > expireTime) {
       localStorage.removeItem("accessToken");
       return "";
@@ -87,13 +87,54 @@ const returnRole =  (token) => {
   }
 };
 
+// upload user image
+export const sellerImageUpload = createAsyncThunk(
+  "seller/image-upload",
+  async (payload, { fulfillWithValue, rejectWithValue }) => {
+    const formData = new FormData();
+    formData.append("userImage", payload.image[0]);
+
+    try {
+      const response = await api.patch(
+        `/seller/profile-image-upload/${payload.userId}`,
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
+      return fulfillWithValue(response.data);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// upload seller shop info
+export const sellerShopInfoUpload = createAsyncThunk(
+  "seller/shop-info-upload",
+  async (payload, { fulfillWithValue, rejectWithValue }) => {
+    const formData = new FormData();
+    Object.keys(payload.data).map((key) => {
+      formData.append(key, payload.data[key]);
+    });
+    try {
+      const response = await api.patch(`/seller/shop-info-upload/${payload.userId}`, formData, {
+        withCredentials: true,
+      });
+      return fulfillWithValue(response.data);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     successMessage: "",
     errorMessage: "",
     loading: false,
-    role:  returnRole(localStorage.getItem("accessToken")),
+    role: returnRole(localStorage.getItem("accessToken")),
     token: localStorage.getItem("accessToken"),
     userInfo: {},
   },
@@ -109,7 +150,7 @@ const authSlice = createSlice({
     },
     [adminLogin.fulfilled]: (state, action) => {
       state.token = action.payload.token;
-      state.role = action.payload.user.role
+      state.role = action.payload.user.role;
 
       state.successMessage = action.payload.message;
       state.userInfo = action.payload.user;
@@ -121,7 +162,7 @@ const authSlice = createSlice({
     },
 
     // seller register
-    [sellerRegister.pending]: (state, action) => {
+    [sellerRegister.pending]: (state) => {
       state.loading = true;
     },
     [sellerRegister.fulfilled]: (state, action) => {
@@ -135,13 +176,13 @@ const authSlice = createSlice({
     },
 
     // seller login
-    [sellerLogin.pending]: (state, action) => {
+    [sellerLogin.pending]: (state) => {
       state.loading = true;
     },
     [sellerLogin.fulfilled]: (state, action) => {
       state.token = action.payload.token;
-      state.role = action.payload.user.role
-      
+      state.role = action.payload.user.role;
+
       state.successMessage = action.payload.message;
       state.userInfo = action.payload.user;
       state.loading = false;
@@ -152,12 +193,38 @@ const authSlice = createSlice({
     },
 
     // get use info
-
     [getUserInfo.fulfilled]: (state, action) => {
       state.userInfo = action.payload.user;
     },
     [getUserInfo.rejected]: (state, action) => {
       console.log(action.payload);
+    },
+
+    // seller profile image upload
+    [sellerImageUpload.pending]: (state) => {
+      state.loading = true;
+    },
+    [sellerImageUpload.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.successMessage = action.payload?.message;
+    },
+    [sellerImageUpload.rejected]: (state, action) => {
+      state.loading = false;
+      state.errorMessage = action.payload?.message;
+    },
+
+    // seller shop info upload
+    [sellerShopInfoUpload.pending]: (state) => {
+      state.loading = true;
+    },
+    [sellerShopInfoUpload.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.successMessage = action.payload?.message;
+      state.userInfo.shopInfo = action.payload?.shopInfo;
+    },
+    [sellerShopInfoUpload.rejected]: (state, action) => {
+      state.loading = false;
+      state.errorMessage = action.payload?.message;
     },
   },
 });

@@ -1,30 +1,25 @@
 /* eslint-disable no-sparse-arrays */
 /* eslint-disable react/jsx-key */
 import { useEffect, useState } from "react";
-
 // react-redux
 import { useSelector, useDispatch } from "react-redux";
-
 // action
 import {
   deleteProductFromDB,
   getProductsFromDB,
   resetProductMessages,
 } from "../../../store/Reducers/productSlice";
-
 // custome & reusable components
 import Search from "../../../components/search";
 import Table from "../../../components/table";
 import Pagination from "../../../components/pagination";
 import Action from "../../../components/table-action";
-
+import Loader from "../../../components/ui/loader";
 // react-icons
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import DeleteConfirmation from "../../../components/modals/delete-confirmation";
 import toast from "react-hot-toast";
-
 // other third party libraries
-import { HashLoader } from "react-spinners";
 
 const tableOption = {
   thead: [
@@ -217,9 +212,7 @@ const Products = () => {
         btnHandler={handleConfirmProductDelete}
       />
       {loading && (
-        <div className="h-[calc(100vh-100px)] w-full flex justify-center items-center">
-          <HashLoader color="#36d7b7" size={90} />
-        </div>
+        <Loader />
       )}
       {!loading && (
         <div className="w-full p-4 bg-[#283046] rounded-md z-20">

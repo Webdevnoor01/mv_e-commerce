@@ -3,7 +3,7 @@ const router = require("express").Router()
 // imported routes
 const adminAuthRoute = require("./adminRoutes")
 const authRoute = require("./authRoutes")
-const adminRoute = require("./dashboard/categoryRoute")
+const adminRoute = require("./dashboard/admin/adminRoutes")
 const sellerRoutes = require("./dashboard/seller/sellerRoutes")
 
 // route for authentication

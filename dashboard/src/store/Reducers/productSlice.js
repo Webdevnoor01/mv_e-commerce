@@ -135,7 +135,6 @@ const productSlice = createSlice({
     imageUploadLoading: false,
     products: [],
     product: {},
-
     totalProducts: 0,
   },
   reducers: {

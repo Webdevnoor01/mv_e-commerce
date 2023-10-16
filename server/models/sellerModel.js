@@ -31,8 +31,8 @@ const sellerSchema =Schema({
         required:true
     },
     image:{
-        type:String,
-        default:""
+        type:Object,
+        default:{}
     },
     shopInfo:{
         type:Object,
@@ -41,6 +41,22 @@ const sellerSchema =Schema({
 },
 {
     timestamps:true
+})
+
+sellerSchema.index({
+    name:"text",
+    email:"text",
+    "shopInfo.payment":"text",
+    "shopInfo.district":"text",
+    "shopInfo.state":"text",
+    "shopInfo.pinCode":"text"
+},{
+    width:{
+        name:5,
+        brand:4,
+        category:3,
+        description:2
+    }
 })
 
 module.exports = model("sellers", sellerSchema)

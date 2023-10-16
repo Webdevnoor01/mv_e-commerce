@@ -1,17 +1,15 @@
+// Models
 const Admin = require("../models/adminModel");
 const Seller = require("../models/sellerModel");
-
 // libraries
 const bcrypt = require("bcrypt");
-
 // services
 const tokenService = require("../services/token");
-
 // Utils
 const returnResponse = require("../utils/response");
-const { createToken } = require("../utils/token");
 
 class AuthController {
+
   async admin_login(req, res) {
     const { email, password } = req.body;
     try {

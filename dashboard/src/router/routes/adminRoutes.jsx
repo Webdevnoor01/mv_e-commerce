@@ -11,6 +11,8 @@ const SellerDetails = lazy(() => import("../../views/admin/seller-details"));
 const SellersChat = lazy(() => import("../../views/admin/sellers-chat"));
 const OrderDetails = lazy(() => import("../../views/admin/order-details"));
 
+// custome and reusabel components
+import Loader from "../../components/ui/loader"
 export const adminRoutes = [
   {
     path: "admin/dashboard",
@@ -77,6 +79,15 @@ export const adminRoutes = [
   },
   {
     path: "admin/dashboard/seller/details/:sellerId",
+    element: (
+      <Suspense fallback="Loading...">
+        <SellerDetails />
+      </Suspense>
+    ),
+    role: "admin",
+  },
+  {
+    path: "admin/dashboard/seller-requests/details/:sellerId",
     element: (
       <Suspense fallback="Loading...">
         <SellerDetails />

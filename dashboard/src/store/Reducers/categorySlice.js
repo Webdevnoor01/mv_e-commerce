@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import api from '../../api';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import api from "../../api";
 
 // import jwt from 'jwt-decode';
 
@@ -9,17 +9,17 @@ import api from '../../api';
 
 //  add category into the database
 export const addCategoryIntoDB = createAsyncThunk(
-  'admin/category-add',
+  "admin/category-add",
   async ({categoryName, image}, { rejectWithValue, fulfillWithValue }) => {
     try {
       const formData = new FormData()
-      formData.append('categoryName', categoryName)
-      formData.append('image', image)
-      const category = await api.post('/admin/category-add', formData, {
+      formData.append("categoryName", categoryName)
+      formData.append("image", image)
+      const category = await api.post("/admin/category-add", formData, {
         withCredentials: true,
       });
       
-      console.log('data-> ', category.data)
+      console.log("data-> ", category.data)
       return fulfillWithValue(category.data);
     } catch (e) {
       console.log(e);
@@ -30,7 +30,7 @@ export const addCategoryIntoDB = createAsyncThunk(
 
 
 export const getCategoryFromDB = createAsyncThunk(
-  'admin/category-get',
+  "admin/category-get",
   async ({page, parPage, searchValue}, { rejectWithValue, fulfillWithValue }) => {
     try {
  
@@ -38,7 +38,7 @@ export const getCategoryFromDB = createAsyncThunk(
         withCredentials: true,
       });
       
-      console.log('data-> ', category.data)
+      console.log("data-> ", category.data)
       return fulfillWithValue(category.data);
     } catch (e) {
       console.log(e);
@@ -49,17 +49,17 @@ export const getCategoryFromDB = createAsyncThunk(
 
 
 const categorySlice = createSlice({
-  name: 'category',
+  name: "category",
   initialState: {
-    successMessage: '',
-    errorMessage: '',
+    successMessage: "",
+    errorMessage: "",
     loading: false,
    categories:[],
    totalCategory:0
   },
   reducers: {
     resetCategoryMessages: (state) => {
-      (state.errorMessage = ''), (state.successMessage = '');
+      (state.errorMessage = ""), (state.successMessage = "");
     },
   },
   extraReducers: {

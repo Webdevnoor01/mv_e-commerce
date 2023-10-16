@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React, { useEffect, useState } from "react";
 
 // react-redux
@@ -21,7 +22,6 @@ import Select from "../../../components/shared/select";
 
 // react spinner
 import { BeatLoader } from "react-spinners";
-import { overrideStyle } from "../../../utils/overrideStyle";
 
 // actions
 import {
@@ -46,7 +46,6 @@ const tableOption = {
             alt=""
           />
         </div>,
-        ,
         <span> sports </span>,
         <span className="flex justify-start items-center gap-1">
           <Action Icon={FaEdit} bg={"bg-yellow-500"} />
@@ -171,7 +170,7 @@ const Category = () => {
             alt={category.name}
           />
         </div>,
-        <span> sports </span>,
+        <span> {category.name} </span>,
         <span className="flex justify-start items-center gap-1">
           <Action Icon={FaEdit} bg={"bg-yellow-500"} />
           <Action Icon={FaTrash} bg={"bg-red-500"} />

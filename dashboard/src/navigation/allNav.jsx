@@ -3,7 +3,7 @@ import {
   AiOutlineShoppingCart,
   AiOutlinePlus,
 } from "react-icons/ai";
-import { BiCategory, BiLoaderCircle } from "react-icons/bi";
+import { BiCategory, BiLoaderCircle, BiLogOut } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
 import { CiChat1 } from "react-icons/ci";
 import { BsCurrencyDollar, BsChat } from "react-icons/bs";
