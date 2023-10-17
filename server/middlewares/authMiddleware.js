@@ -5,6 +5,8 @@ class AuthMiddleware {
   async authenticate(req, res, next) {
     const { accessToken } = req.cookies;
     try {
+      console.log("accessToken", req.cookies)
+      
       if (!accessToken) {
         return returnResponse(res, 401, {
           status: "Bad",
@@ -13,6 +15,7 @@ class AuthMiddleware {
       }
 
       const user = await jwt.verify(accessToken, process.env.JWT_SECRET);
+      console.log("uesr: ", user)
       if (!user) {
         return returnResponse(res, 401, {
           statsu: "Bad",
