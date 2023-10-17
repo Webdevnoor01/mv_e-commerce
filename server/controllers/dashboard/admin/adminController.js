@@ -12,7 +12,37 @@ const imageUploader = require("../../../services/image-upload");
 const returnResponse = require("../../../utils/response");
 
 class AdminController {
-  async getSellerRequests(req, res) {
+  // get active seller form the databse
+  async getActiveSellers(req, res) {
+    const { page, parPage, searchValue } = req.query;
+    try {
+      if (searchValue) {
+      } else {
+        const sellers = await Sellers.find({ status: "active" })
+          .limit(parseInt(parPage))
+          .sort();
+        const totalSellers = await Sellers.find({ status: "active" })
+          .limit(parseInt(parPage))
+          .countDocuments();
+        if (!sellers) {
+          console.log("seller error ", sellers);
+          return returnResponse(res, 500, {
+            message: "Something went wrong",
+          });
+        }
+
+        return returnResponse(res, 200, {
+          sellers,
+          totalSellers,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      return returnResponse(res, 500, error.message);
+    }
+  }
+  // get inactive seller from the database
+  async getInactiveSellers(req, res) {
     const { page, parPage, searchValue } = req.query;
     try {
       if (searchValue) {
@@ -40,7 +70,27 @@ class AdminController {
       return returnResponse(res, 500, error.message);
     }
   }
+  // get sellerInfo from the databse
+  async getSeller(req, res){
+    const { sellerId } = req.params
+    try {
+      const seller = await Seller.findById(sellerId)
+      if(!seller){
+        console.log("seller error ", seller)
+        return returnResponse(res, 400, {
+          message:"Seller not found"
+        })
+      }
 
+      returnResponse(res, 200, {
+        sellerInfo:seller
+      })
+    } catch (error) {
+      console.log(error)
+      returnResponse(res, 500, error.message)
+    }
+  }
+  // Update seller status
   async updateSellerStatus(req, res) {
     const form = formidable();
     form.parse(req, async (err, fields) => {
@@ -57,8 +107,11 @@ class AdminController {
             message: "Failed to update seller status",
           });
         }
+        const sellerInfo = await Seller.findById(seller._id).select("status")
+        console
         return returnResponse(res, 200, {
           message: "Seller status update successfully",
+          status:sellerInfo.status
         });
       } catch (error) {
         console.log(error);
@@ -69,6 +122,7 @@ class AdminController {
     });
   }
 
+  // store category into the databse
   async addCategory(req, res) {
     try {
       const form = formidable();
@@ -108,7 +162,7 @@ class AdminController {
       });
     }
   }
-
+  // get category form the databse
   async getCategory(req, res) {
     const { page, parPage, searchValue } = req.query;
     try {

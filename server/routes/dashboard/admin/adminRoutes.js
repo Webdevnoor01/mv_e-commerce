@@ -9,7 +9,10 @@ const adminController = require("../../../controllers/dashboard/admin/adminContr
 // routes
 
 // routes for get pending, active, deactive seller
-router.get("/seller-requests-get", authMiddleware.authenticate, adminController.getSellerRequests)
+router.get("/active-sellers-get", authMiddleware.authenticate, adminController.getActiveSellers)
+router.get("/active-seller-get/:sellerId", authMiddleware.authenticate, adminController.getSeller)
+router.get("/inactive-sellers-get", authMiddleware.authenticate, adminController.getInactiveSellers)
+router.get("/inactive-seller-get/:sellerId", authMiddleware.authenticate, adminController.getSeller)
 router.patch("/seller-status-update", authMiddleware.authenticate, adminController.updateSellerStatus)
 
 

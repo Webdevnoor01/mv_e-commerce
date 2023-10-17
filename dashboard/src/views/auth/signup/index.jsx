@@ -34,7 +34,7 @@ import {
 
 // third-party libraries
 import { toast } from "react-hot-toast";
-import { PropagateLoader } from "react-spinners";
+import { BeatLoader, PropagateLoader } from "react-spinners";
 
 const Register = () => {
   const auth = useSelector((state) => state.auth);
@@ -164,7 +164,7 @@ const Register = () => {
             <Button
               btnTxt={"SIGN UP"}
               type={"submit"}
-              isLoading={loading}
+              isLoading={auth.loading}
               IconLoading={<BeatLoader color="#ffffff" size="1.25rem" />}
             />
             <div className="flex item-center mb-3 gap-3 justify-center">

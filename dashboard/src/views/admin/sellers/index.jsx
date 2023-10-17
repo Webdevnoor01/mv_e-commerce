@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react/jsx-key */
+import { useEffect, useState } from "react";
 
 // third-party libraries
 import shortid from "shortid";
@@ -13,15 +14,18 @@ import InputGroup from "../../../components/shared/Input-group";
 import Action from "../../../components/table-action";
 import Pagination from "../../../components/pagination";
 import Select from "../../../components/shared/select"
+import { useDispatch, useSelector } from "react-redux";
+import { getActiveSellersFromDB } from "../../../store/Reducers/sellerSlice";
 
 const Sellers = () => {
+  const { sellers, totalSellers, loading } = useSelector(
+    (state) => state.seller
+  );
+  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchData, setSearchData] = useState("");
+  const [searchValue, setSearchValue] = useState("");
   const [parPage, setParPage] = useState(10);
-  const [show, setShow] = useState(false);
-  const [imageShow, setImageShow] = useState(false);
-  const [state, setState] = useState("");
-  const [loader, setLoader] = useState(false);
+  const [tbody, setTbody] = useState({});
 
   const tableOption = {
     thead: ["No", "Image", "Name", "shop Name", "Payment Status", "Email", "Dividion", "District", "Actions"],
@@ -116,6 +120,16 @@ const Sellers = () => {
       },
     },
   };
+  useEffect(() => {
+    dispatch(
+      getActiveSellersFromDB({
+        page: currentPage,
+        parPage,
+        searchValue,
+      })
+    );
+  }, [currentPage, parPage, searchValue]);
+  
 
   const pageNumSelectOpt = [
     {
@@ -134,7 +148,40 @@ const Sellers = () => {
       text:20
     },
   ]
+// The below useEffect will convert the categories into table row and also add extra element which are need to render into the category table like edit button, delete button etc.
+useEffect(() => {
+  const tableBodyData = sellers.reduce((acc, seller, i) => {
+    let td = [
+      i + 1,
+      <div className="w-[2.8125rem] h-[2.8125rem]   rounded-full">
+        <img
+          className=" w-full h-full  rounded-full "
+          src={`${
+            seller.image.url ? seller.image.url : "../../../images/admin.jpg"
+          }`}
+          alt={seller.name}
+        />
+      </div>,
+      <span> {seller.name} </span>,
+      <span> {seller.email} </span>,
+      <span>{seller.payment}</span>,
+      <span>{seller.status}</span>,
+      <span className="flex justify-start items-center gap-1">
+        <Action
+          Icon={FaEye}
+          bg={"bg-green-500"}
+          to={`/admin/dashboard/seller/details/${seller._id}`}
+        />
+      </span>,
+    ];
+    acc[`data${i + 1}`] = {
+      td: td,
+    };
+    return acc;
+  }, {});
 
+  setTbody({ ...tableBodyData });
+}, [sellers]);
   const handlePageNum = (e) => {
     setParPage(e.target.value)
   }
@@ -151,7 +198,7 @@ const Sellers = () => {
           </div>
 
           <div className="w-full text-sm text-left text-[#d0d2d6]">
-            <Table thead={tableOption.thead} tbodys={tableOption.tbody} />
+            <Table thead={tableOption.thead} tbodys={tbody} loading={loading} />
           </div>
           <div className="w-full flex justify-end items-center mt-4 bottom-4 right-4">
             <Pagination

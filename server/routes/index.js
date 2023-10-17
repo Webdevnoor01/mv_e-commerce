@@ -1,7 +1,7 @@
 const router = require("express").Router()
 
 // imported routes
-const adminAuthRoute = require("./adminRoutes")
+const adminAuthRoute = require("./adminAuthRoutes")
 const authRoute = require("./authRoutes")
 const adminRoute = require("./dashboard/admin/adminRoutes")
 const sellerRoutes = require("./dashboard/seller/sellerRoutes")

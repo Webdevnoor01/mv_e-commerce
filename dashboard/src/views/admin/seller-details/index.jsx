@@ -2,23 +2,35 @@ import { useEffect, useState } from "react";
 // react-router-dom
 import { useParams } from "react-router-dom";
 // react-redux
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 // third-party library
 import shortid from "shortid";
-import { toast } from "react-hot-toast"
+import { toast } from "react-hot-toast";
 // custome & reusable components
 import Select from "../../../components/shared/select";
 import Button from "../../../components/ui/button";
 import Loader from "../../../components/ui/loader";
-import { resetSellersMessages, updateSellerAccountStatus } from "../../../store/Reducers/sellerSlice";
+import {
+  getInactiveSellerFromDB,
+  resetSellersMessages,
+  updateSellerAccountStatus,
+} from "../../../store/Reducers/sellerSlice";
+import { BeatLoader } from "react-spinners";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+// TODO: You have to create skeliton animation for userImage, userInfo and address section
 const SellerDetails = () => {
-  const { requestedSellers, errorMessage, successMessage } = useSelector((state) => state.seller);
+  const {
+    sellers,
+    inactiveSellers,
+    stautsUpdateLoading,
+    sellerInfo,
+    errorMessage,
+    successMessage,
+  } = useSelector((state) => state.seller);
   const params = useParams();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [status, setStatus] = useState("");
-  const [sellerInfo, setSellerInfo] = useState({});
   const selectOptions = [
     {
       id: shortid.generate(),
@@ -32,32 +44,30 @@ const SellerDetails = () => {
     },
     {
       id: shortid.generate(),
-      value: "inactive",
-      text: "Inactive",
+      value: "pending",
+      text: "Pending",
     },
   ];
+
   useEffect(() => {
-    if (requestedSellers) {
-      const seller = requestedSellers.filter(
-        (seller) => seller._id === params.sellerId
-      );
-      setSellerInfo(seller[0]);
-    }
-  }, [requestedSellers]);
+    if (inactiveSellers)
+      dispatch(getInactiveSellerFromDB({ sellerId: params.sellerId }));
+    if(sellers) ""
+  }, []);
 
   const handleSelect = (e) => {
     setStatus(e.target.value);
   };
 
   const handleStatusSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const payload = {
       sellerId: sellerInfo._id,
-      status
-    }
-    dispatch(updateSellerAccountStatus(payload))
-    setStatus("")
-  }
+      status,
+    };
+    dispatch(updateSellerAccountStatus(payload));
+    setStatus("");
+  };
 
   useEffect(() => {
     if (errorMessage) {
@@ -65,11 +75,6 @@ const SellerDetails = () => {
     }
     if (successMessage) {
       toast.success(successMessage);
-      setSellerInfo({
-        ...sellerInfo,
-        status:"active"
-      })
-
     }
     return () => {
       dispatch(resetSellersMessages());
@@ -80,7 +85,6 @@ const SellerDetails = () => {
       {!sellerInfo && <Loader size={80} />}
       {sellerInfo && (
         <div className="w-full p-4 bg-[#283046] rounded-md flex flex-wrap gap-2 ">
-
           <div className="w-full flex flex-col md:flex-row flex-wrap text-[#d0d2d6] ">
             <div className="w-full md:w-3/12 flex justify-center items-center py-3 ">
               <div>
@@ -162,20 +166,24 @@ const SellerDetails = () => {
             </div>
           </div>
 
-          
-            <form onSubmit={handleStatusSubmit}  >
-              <div className="flex gap-4 py-3 ">
-                <Select
-                  options={selectOptions}
-                  value={status}
-                  name={"status"}
-                  onChange={handleSelect}
+          <form onSubmit={handleStatusSubmit}>
+            <div className="flex gap-4 py-3 ">
+              <Select
+                options={selectOptions}
+                value={status}
+                name={"status"}
+                onChange={handleSelect}
+              />
+              <div className="w-[170px]">
+                <Button
+                  type="submit"
+                  btnTxt={"Submit"}
+                  isLoading={stautsUpdateLoading}
+                  IconLoading={<BeatLoader color="#fff" size={"1.25rem"} />}
                 />
-                <div className="w-[170px]">
-                  <Button type="submit" btnTxt={"Submit"} />
-                </div>
               </div>
-            </form>
+            </div>
+          </form>
         </div>
       )}
     </div>

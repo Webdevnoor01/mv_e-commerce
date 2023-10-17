@@ -50,7 +50,7 @@ const tableOption = {
   },
 };
 const SellerRequest = () => {
-  const { requestedSellers, totalSellers, loading } = useSelector(
+  const { inactiveSellers, totalSellers, loading } = useSelector(
     (state) => state.seller
   );
   const dispatch = useDispatch();
@@ -74,7 +74,7 @@ const SellerRequest = () => {
   };
   // The below useEffect will convert the categories into table row and also add extra element which are need to render into the category table like edit button, delete button etc.
   useEffect(() => {
-    const tableBodyData = requestedSellers.reduce((acc, seller, i) => {
+    const tableBodyData = inactiveSellers.reduce((acc, seller, i) => {
       let td = [
         i + 1,
         <div className="w-[2.8125rem] h-[2.8125rem]   rounded-full">
@@ -105,7 +105,7 @@ const SellerRequest = () => {
     }, {});
 
     setTbody({ ...tableBodyData });
-  }, [requestedSellers]);
+  }, [inactiveSellers]);
   return (
     <div className="px-2 lg:px-7 py-4 relative">
       <div className="w-full">
