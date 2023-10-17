@@ -6,15 +6,14 @@ class AuthMiddleware {
     const { accessToken } = req.cookies;
     try {
       const authorizationToken = req.headers.cookie.split("=")[1]
-      console.log("accessToken->", authorizationToken)
-      console.log(req.headers.cookie)
-      if (!accessToken || !authorizationToken) {
+      const token = accessToken?accessToken:authorizationToken
+      console.log("token ", token)
+      if (!token) {
         return returnResponse(res, 401, {
           status: "Bad",
           message: "Unauthorized access",
         });
       }
-      const token = accessToken?accessToken:authorizationToken
       const user = await jwt.verify(token, process.env.JWT_SECRET);
       console.log("uesr: ", user)
       if (!user) {
