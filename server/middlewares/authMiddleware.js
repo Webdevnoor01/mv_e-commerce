@@ -5,16 +5,17 @@ class AuthMiddleware {
   async authenticate(req, res, next) {
     const { accessToken } = req.cookies;
     try {
-      console.log("accessToken", req.cookies.accessToken)
+      const authorizationToken = req.headers.authorization.split(" ")[1]
+      console.log("accessToken", authorizationToken)
       
-      if (!accessToken) {
+      if (!accessToken || !authorizationToken) {
         return returnResponse(res, 401, {
           status: "Bad",
           message: "Unauthorized access",
         });
       }
-
-      const user = await jwt.verify(accessToken, process.env.JWT_SECRET);
+      const token = accessToken?accessToken:authorizationToken
+      const user = await jwt.verify(token, process.env.JWT_SECRET);
       console.log("uesr: ", user)
       if (!user) {
         return returnResponse(res, 401, {

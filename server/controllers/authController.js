@@ -13,7 +13,6 @@ class AuthController {
     const { email, password } = req.body;
     try {
       const admin = await Admin.findOne({ email: email }).select("+password");
-      console.log("admin ", admin);
       if (admin) {
         const isMatchPassword = await bcrypt.compare(password, admin.password);
         if (isMatchPassword) {
@@ -29,6 +28,7 @@ class AuthController {
             maxAge: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             secure: true,
             httpOnly: true,
+            domain:"https://eshopycart.netlify.app/"
           });
           returnResponse(res, 200, {
             message: "Login successfully",
@@ -86,6 +86,7 @@ class AuthController {
             maxAge: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             secure: true,
             httpOnly: true,
+            domain:"https://eshopycart.netlify.app/"
           });
 
           return returnResponse(res, 200, {

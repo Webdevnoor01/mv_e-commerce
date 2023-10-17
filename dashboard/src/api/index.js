@@ -4,7 +4,7 @@ const api = axios.create({
     baseURL,
     headers:{
         "Access-Control-Allow-Origin": "*",
-        
+        Authorization:`Bearer ${localStorage.getItem("accessToken")}`
     },
 })
 export default api
