@@ -9,7 +9,7 @@ const router = require("./route")
 
 app.use(cores({
     origin:['http://localhost:3000', 'https://eshopycart.netlify.app'],
-    credentials:true
+    credentials:true,
 }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))

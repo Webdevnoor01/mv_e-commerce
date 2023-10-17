@@ -60,8 +60,8 @@ export const getUserInfo = createAsyncThunk(
   "auth/get-user",
   async (_, { rejectWithValue, fulfillWithValue }) => {
     try {
-      const userInfo = await api.get("/auth/get-user", {
-        withCredentials: true,
+      const userInfo = await api.get("/auth/get-user",{
+        withCredentials:true,
       });
       // localStorage.setItem("accessToken", userInfo?.data?.token);
       return fulfillWithValue(userInfo.data);
@@ -118,9 +118,13 @@ export const sellerShopInfoUpload = createAsyncThunk(
       formData.append(key, payload.data[key]);
     });
     try {
-      const response = await api.patch(`/seller/shop-info-upload/${payload.userId}`, formData, {
-        withCredentials: true,
-      });
+      const response = await api.patch(
+        `/seller/shop-info-upload/${payload.userId}`,
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
       return fulfillWithValue(response.data);
     } catch (error) {
       return rejectWithValue(error.message);

@@ -5,7 +5,7 @@ class AuthMiddleware {
   async authenticate(req, res, next) {
     const { accessToken } = req.cookies;
     try {
-      console.log("accessToken", req.cookies)
+      console.log("accessToken", req.cookies.accessToken)
       
       if (!accessToken) {
         return returnResponse(res, 401, {
