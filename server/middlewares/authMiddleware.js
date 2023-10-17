@@ -5,9 +5,9 @@ class AuthMiddleware {
   async authenticate(req, res, next) {
     const { accessToken } = req.cookies;
     try {
-      const authorizationToken = req.headers.authorization.split(" ")[1]
-      console.log("accessToken", authorizationToken)
-      
+      const authorizationToken = req.headers.cookie.split("=")[1]
+      console.log("accessToken->", authorizationToken)
+      console.log(req.headers.cookie)
       if (!accessToken || !authorizationToken) {
         return returnResponse(res, 401, {
           status: "Bad",
