@@ -9,7 +9,6 @@ const tokenService = require("../services/token");
 const returnResponse = require("../utils/response");
 
 class AuthController {
-
   async admin_login(req, res) {
     const { email, password } = req.body;
     try {
@@ -28,6 +27,8 @@ class AuthController {
 
           res.cookie("accessToken", token, {
             maxAge: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            secure: true,
+            httpOnly: true,
           });
           returnResponse(res, 200, {
             message: "Login successfully",
@@ -83,6 +84,8 @@ class AuthController {
 
           res.cookie("accessToken", token, {
             maxAge: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            secure: true,
+            httpOnly: true,
           });
 
           return returnResponse(res, 200, {
