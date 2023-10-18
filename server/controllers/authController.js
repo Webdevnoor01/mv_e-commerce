@@ -27,8 +27,7 @@ class AuthController {
           res.cookie("accessToken", token, {
             maxAge: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             secure: true,
-            httpOnly: true,
-            domain:"https://eshopycart.netlify.app/"
+            HttpOnly: true,
           });
           returnResponse(res, 200, {
             message: "Login successfully",
@@ -86,7 +85,6 @@ class AuthController {
             maxAge: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             secure: true,
             httpOnly: true,
-            domain:"https://eshopycart.netlify.app/"
           });
 
           return returnResponse(res, 200, {
@@ -125,7 +123,18 @@ class AuthController {
       console.log("authController:Error-> ", error);
     }
   }
-
+  async logout(req, res) {
+    try {
+      res.clearCookie('accessToken');
+      returnResponse(res, 200, {
+        message:"cookie cleared"
+      })
+    } catch (error) {
+      returnResponse(res, 500, {
+        message:error.mesage
+      })
+    }
+  }
   async seller_register(req, res) {
     const { name, email, password, role } = req.body;
     try {

@@ -40,6 +40,17 @@ export const sellerLogin = createAsyncThunk(
     }
   }
 );
+export const logout = createAsyncThunk("logout", async (_, {fulfillWithValue, rejectWithValue}) => {
+  try {
+    
+    const response = await api.get("/auth/logout", {
+      withCredentials:true
+    })
+    return fulfillWithValue(response.data)
+  } catch (error) {
+    return rejectWithValue(error.message)
+  }
+})
 export const sellerRegister = createAsyncThunk(
   "auth/seller-register",
   async (payload, { rejectWithValue, fulfillWithValue }) => {
@@ -146,6 +157,11 @@ const authSlice = createSlice({
     resetMessages: (state) => {
       (state.errorMessage = ""), (state.successMessage = "");
     },
+    resetToken: (state) => {
+      state.token = "";
+      state.userInfo = {};
+      state.role = "";
+    }
   },
   extraReducers: {
     // admin login
@@ -195,7 +211,10 @@ const authSlice = createSlice({
       state.errorMessage = action.payload.message;
       state.loading = false;
     },
-
+    // logout
+    [logout.fulfilled]:(state, action) => {
+      console.log(action.payload.message)
+    },
     // get use info
     [getUserInfo.fulfilled]: (state, action) => {
       state.userInfo = action.payload.user;
@@ -232,5 +251,5 @@ const authSlice = createSlice({
     },
   },
 });
-export const { resetMessages } = authSlice.actions;
+export const { resetMessages, resetToken } = authSlice.actions;
 export default authSlice.reducer;

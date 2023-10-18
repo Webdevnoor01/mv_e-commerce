@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 // react-redux
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // react-router-dom
 import { Link, useLocation, useNavigate } from "react-router-dom";
 // custome & reusable components
@@ -11,11 +11,13 @@ import { BiLogOut } from "react-icons/bi";
 import {toast } from "react-hot-toast"
 // utils 
 import { getNavs } from "../navigation";
+import { logout, resetToken } from "../store/Reducers/authSlice";
 
 const Sidebar = ({ showSidebar, setShowSidebar }) => {
   const {
     userInfo: { role },
   } = useSelector((state) => state.auth);
+  const dispatch = useDispatch()
   const { pathname } = useLocation();
   const navigate = useNavigate()
   const [navItems, setNavItems] = useState([]);
@@ -24,11 +26,14 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
 
     if(pathname.includes("seller")){
       localStorage.removeItem("accessToken")
+      dispatch(resetToken())
+      dispatch(logout())
       navigate("/login")
-      
     }
     if(pathname.includes("admin")){
       localStorage.removeItem("accessToken")
+      dispatch(resetToken())
+      dispatch(logout())
       navigate("/admin/login")
       
     }
