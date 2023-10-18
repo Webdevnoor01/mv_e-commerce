@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser")
 const router = require("./route")
 
 app.use(cores({
-    origin:['http://localhost:3000', 'https://eshopycart.netlify.app'],
+    origin:["http://localhost:3000", "https://dashboard-eshop.netlify.app/","https://eshop.netlify.app/" ],
     credentials:true,
 }))
 app.use(bodyParser.json())
