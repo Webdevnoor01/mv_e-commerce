@@ -157,7 +157,7 @@ useEffect(() => {
         <img
           className=" w-full h-full  rounded-full "
           src={`${
-            seller.image.url ? seller.image.url : "../../../images/admin.jpg"
+            seller?.image?.url ? seller?.image?.url : "../../../images/admin.jpg"
           }`}
           alt={seller.name}
         />
