@@ -5,7 +5,7 @@ class AuthMiddleware {
   async authenticate(req, res, next) {
     const { accessToken } = req.cookies;
     try {
-      const authorizationToken = req.headers.cookie.split("=")[1]
+      const authorizationToken = req.headers.authorization.split(" ")[1]
       const token = accessToken?accessToken:authorizationToken
       console.log("token ", token)
       if (!token) {

@@ -28,6 +28,7 @@ class AuthController {
             maxAge: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             secure: true,
             HttpOnly: true,
+            path:"/"
           });
           returnResponse(res, 200, {
             message: "Login successfully",
@@ -85,6 +86,7 @@ class AuthController {
             maxAge: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             secure: true,
             httpOnly: true,
+            path:"/"
           });
 
           return returnResponse(res, 200, {
