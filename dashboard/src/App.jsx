@@ -14,8 +14,8 @@ import { getRoutes } from "./router/routes";
 import { getUserInfo } from "./store/Reducers/authSlice";
 
 function App() {
-  const { token } = useSelector(state => state.auth)
-  const dispatch = useDispatch()
+  // const { token } = useSelector(state => state.auth)
+  const dispatch = useDispatch();
   const [allRoutes, setAllRoutes] = useState([...publicRoutes]);
 
   useEffect(() => {
@@ -23,14 +23,13 @@ function App() {
     setAllRoutes((prevRoutes) => [...prevRoutes, routes]);
   }, []);
 
+  const token = localStorage.getItem("accessToken");
   useEffect(() => {
-    console.log("token -> ", token)
-    if(token){
-
-      dispatch(getUserInfo())
+    console.log("token -> ", token);
+    if (token) {
+      dispatch(getUserInfo());
     }
-  },[token])
-
+  }, [token]);
   return <Router allRoutes={allRoutes} />;
 }
 

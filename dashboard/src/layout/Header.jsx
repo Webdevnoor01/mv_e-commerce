@@ -1,6 +1,9 @@
 /* eslint-disable react/prop-types */
 import { FaList } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+
+// base url 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 const Header = ({ showSidebar, setShowSidebar }) => {
   const { userInfo } = useSelector(state => state.auth)
   return (
@@ -33,7 +36,7 @@ const Header = ({ showSidebar, setShowSidebar }) => {
               </div>
               <img
                 className="w-[2.8125rem] h-[2.8125rem] rounded-full over"
-                src="http://localhost:3000/images/admin.jpg"
+                src={`${userInfo?.image?.url ? userInfo.image.url: `${BASE_URL}/images/admin.jpg` }`}
                 alt="user logo"
               />
             </div>

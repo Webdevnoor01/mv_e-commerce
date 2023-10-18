@@ -61,7 +61,8 @@ const Profile = () => {
   });
 
   const onValid = (data) => {
-    dispatch(sellerShopInfoUpload({ data, userId: userInfo._id }));
+    console.log(userInfo)
+    dispatch(sellerShopInfoUpload({ data, userId: userInfo.id }));
     // setIsShopInfoEditOpen(!isShopInfoEditOpen)
   };
 
@@ -86,7 +87,6 @@ const Profile = () => {
         setValue(key, userInfo?.shopInfo[key]);
       });
     }
-    console.log(isShopInfoEditOpen);
   };
 
   useEffect(() => {
@@ -98,15 +98,11 @@ const Profile = () => {
       setIsShopInfoEditOpen(!isShopInfoEditOpen)
 
     }
-    // if (!loading) {
-    //   setIsShopInfoEditOpen(false);
-    // }
     return () => {
       dispatch(resetMessages());
     };
   }, [errorMessage, successMessage, loading]);
 
-  console.log("userInfo", userInfo);
   return (
     <div className="px-2 lg:px-7 py-5">
       <div className="w-full flex items-start flex-wrap gap-5">

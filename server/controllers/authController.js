@@ -39,7 +39,7 @@ class AuthController {
               email: admin.email,
               role: admin.role,
               status: admin.status,
-              image: admin.image,
+              image: admin.image
             },
           });
         } else {
@@ -99,6 +99,7 @@ class AuthController {
               role: seller.role,
               status: seller.status,
               image: seller.image,
+              shopInfo:seller?.shopInfo
             },
           });
         } else {

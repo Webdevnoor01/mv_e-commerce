@@ -7,7 +7,6 @@ class AuthMiddleware {
     try {
       const authorizationToken = req.headers.authorization.split(" ")[1]
       const token = accessToken?accessToken:authorizationToken
-      console.log("token ", token)
       if (!token) {
         return returnResponse(res, 401, {
           status: "Bad",
@@ -15,7 +14,6 @@ class AuthMiddleware {
         });
       }
       const user = await jwt.verify(token, process.env.JWT_SECRET);
-      console.log("uesr: ", user)
       if (!user) {
         return returnResponse(res, 401, {
           statsu: "Bad",
