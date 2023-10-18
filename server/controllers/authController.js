@@ -194,9 +194,19 @@ class AuthController {
       } else {
         user = await Seller.findById(id);
       }
+      const payload =  {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        status: user.status,
+        image: user.image,
+        shopInfo:user?.shopInfo
+      }
+
       returnResponse(res, 200, {
         status: "Ok",
-        user,
+        user:payload
       });
     } catch (error) {
       console.log("authController:Error-> ", error);

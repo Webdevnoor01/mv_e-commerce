@@ -60,6 +60,21 @@ const Profile = () => {
     reValidateMode: "onChange",
   });
 
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+    }
+    if (successMessage) {
+      toast.success(successMessage);
+      setIsShopInfoEditOpen(!isShopInfoEditOpen)
+
+    }
+    
+    setIsShopInfoEditOpen(false)
+    return () => {
+      dispatch(resetMessages());
+    };
+  }, [errorMessage, successMessage, loading]);
   const onValid = (data) => {
     console.log(userInfo)
     dispatch(sellerShopInfoUpload({ data, userId: userInfo.id }));
@@ -89,19 +104,7 @@ const Profile = () => {
     }
   };
 
-  useEffect(() => {
-    if (errorMessage) {
-      toast.error(errorMessage);
-    }
-    if (successMessage) {
-      toast.success(successMessage);
-      setIsShopInfoEditOpen(!isShopInfoEditOpen)
 
-    }
-    return () => {
-      dispatch(resetMessages());
-    };
-  }, [errorMessage, successMessage, loading]);
 
   return (
     <div className="px-2 lg:px-7 py-5">
