@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { FaList } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import { FaList } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 // base url 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -29,13 +29,13 @@ const Header = ({ showSidebar, setShowSidebar }) => {
           <div className="flex items-center justify-center">
             <div className="flex items-center justify-center gap-3">
               <div className="flex items-center justify-center flex-col text-end ">
-                <h2 className="text-sm font-bold  ">{userInfo?.name?.split(' ').slice(0, 2).join(' ')}</h2>
+                <h2 className="text-sm font-bold  ">{userInfo?.name?.split(" ").slice(0, 2).join(" ")}</h2>
                 <span className="text-[0.875rem] font-normal w-full " title={userInfo.name}>
                   {userInfo.role}
                 </span>
               </div>
               <img
-                className="w-[2.8125rem] h-[2.8125rem] rounded-full over"
+                className="w-[2.8125rem] h-[2.8125rem] rounded-full object-cover "
                 src={`${userInfo?.image?.url ? userInfo.image.url: `${BASE_URL}/images/admin.jpg` }`}
                 alt="user logo"
               />
